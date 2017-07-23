@@ -1,0 +1,14 @@
+﻿<Window x:Class="FinalProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FinalProject"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="487.811" Width="701">
+    <Grid Margin="10,10,17,12" RenderTransformOrigin="0.551,0.622">
+        <Button x:Name="Search_Window" Content="Search Window" HorizontalAlignment="Left" Margin="239,43,0,0" VerticalAlignment="Top" Width="190" Height="46" FontSize="24" Click="Search_Window_Click"/>
+        <DataGrid x:Name="invoiceDataGrid2" HorizontalAlignment="Left" Margin="58,118,0,0" VerticalAlignment="Top" Height="294" Width="566" SelectionChanged="invoiceDataGrid2_SelectionChanged"/>
+
+    </Grid>
+</Window>
