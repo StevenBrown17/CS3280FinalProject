@@ -30,6 +30,11 @@ namespace FinalProject
             return sSQL;
         }
 
+
+        
+
+        //TODO: What if there are 2 invoices with the same charge?
+
         /// <summary>
         /// This SQL gets all the data on an invoice for a given total charge
         /// </summary> 
@@ -40,6 +45,23 @@ namespace FinalProject
             string sSQL = "SELECT * FROM Invoices WHERE TotalCharge= " + sTotalCharge;
             return sSQL;
         }
-    
-    }
-}
+
+
+        /// <summary>
+        /// Selects items from an invoice based on the invoice number given
+        /// </summary>
+        /// <param name="sInvoiceNum"></param>
+        /// <returns></returns>
+        public string SelectItemsOnInvoice(string sInvoiceNum){
+            string sSQL = "SELECT ID.ItemDesc, ID.Cost "+
+                          "FROM ItemDesc ID "+
+                          "INNER JOIN(Invoices I INNER JOIN LineItems LI ON I.InvoiceNum = LI.InvoiceNum) ON ID.ItemCode = LI.ItemCode "+
+                          "WHERE I.InvoiceNum = "+sInvoiceNum;
+            return sSQL;
+        }//end SelectItemsOnInvoice()
+
+
+
+
+    }//end class
+}//end namespace
