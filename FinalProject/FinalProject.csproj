@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="clsDataAccess.cs" />
     <Compile Include="clsSQL.cs" />
+    <Compile Include="clsUtil.cs" />
     <Compile Include="SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>

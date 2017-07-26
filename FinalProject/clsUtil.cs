@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FinalProject {
+    public static class clsUtil {
 
-    public class clsUtil {
-
-        public static String invoiceId="";
-
+        public static String invoiceId = "";
 
 
 
 
-
-    }//end class
-}//end namespace
+    }
+}

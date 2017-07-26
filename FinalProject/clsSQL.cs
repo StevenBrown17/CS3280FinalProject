@@ -52,8 +52,8 @@ namespace FinalProject
         /// </summary>
         /// <param name="sInvoiceNum"></param>
         /// <returns></returns>
-        public string SelectItemsOnInvoice(string sInvoiceNum){
-            string sSQL = "SELECT ID.ItemDesc, ID.Cost "+
+        public String SelectItemsOnInvoice(string sInvoiceNum){
+            String sSQL = "SELECT ID.ItemDesc, ID.Cost "+
                           "FROM ItemDesc ID "+
                           "INNER JOIN(Invoices I INNER JOIN LineItems LI ON I.InvoiceNum = LI.InvoiceNum) ON ID.ItemCode = LI.ItemCode "+
                           "WHERE I.InvoiceNum = "+sInvoiceNum;
@@ -61,6 +61,15 @@ namespace FinalProject
         }//end SelectItemsOnInvoice()
 
 
+        /// <summary>
+        /// Selects inventory items and associated cost.
+        /// </summary>
+        /// <returns></returns>
+        public String SelectInventoryItems() {
+            String sSQL = "SELECT ItemDesc.ItemDesc, ItemDesc.Cost " +
+                          "FROM ItemDesc;";
+            return sSQL;
+        }
 
 
     }//end class
