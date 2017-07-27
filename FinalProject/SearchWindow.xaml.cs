@@ -18,13 +18,11 @@ using System.Data.OleDb;
 using System.Windows.Navigation;
 using System.Configuration;
 
-namespace FinalProject
-{
+namespace FinalProject {
     /// <summary>
-    /// Interaction logic for SearchWindow.xaml
+    /// Interaction logic for SearchWindow.xaml By Martha Canizales
     /// </summary>
-    public partial class SearchWindow : Window
-    {
+    public partial class SearchWindow : Window {
         /// <summary>
         /// Create an object of type clsDataAccess to access the database
         /// </summary>
@@ -33,14 +31,11 @@ namespace FinalProject
 
         DataTable dt;
 
-
-        public SearchWindow()
-        {
+        public SearchWindow() {
             InitializeComponent();
 
             //automatically load drop down menu for Invoice ID
-            try
-            {
+            try {
                 //Create a DataSet to hold the data
                 DataSet ds;
 
@@ -51,20 +46,16 @@ namespace FinalProject
                 ds = db.ExecuteSQLStatement("SELECT InvoiceNum FROM Invoices", ref iRet);
 
                 //Loop through all the values returned
-                for (int i = 0; i < iRet; i++)
-                {
+                for (int i = 0; i < iRet; i++) {
                     //Add InvoiceID's to the dropdown box
                     invoiceIDComboBox.Items.Add(ds.Tables[0].Rows[i][0].ToString());
-                }               
-            }
-            catch (Exception)
-            {
+                }
+            } catch (Exception) {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
 
             ///automatically load drop down menu for Invoice Date
-            try
-            {
+            try {
                 ///Create a DataSet to hold the data
                 DataSet ds;
 
@@ -75,21 +66,17 @@ namespace FinalProject
                 ds = db.ExecuteSQLStatement("SELECT InvoiceDate FROM Invoices", ref iRet);
 
                 ///Loop through all the values returned
-                for (int i = 0; i < iRet; i++)
-                {
+                for (int i = 0; i < iRet; i++) {
                     ///Add Invoice Dates to the dropdown box
 
                     invoiceDateComboBox.Items.Add(ds.Tables[0].Rows[i][0]).ToString();
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
 
             ///automatically load drop down menu for Invoice Total Charge
-            try
-            {
+            try {
                 //Create a DataSet to hold the Total Charge
                 DataSet ds;
 
@@ -100,22 +87,16 @@ namespace FinalProject
                 ds = db.ExecuteSQLStatement("SELECT TotalCharge FROM Invoices", ref iRet);
 
                 //Loop through all the values returned
-                for (int i = 0; i < iRet; i++)
-                {
+                for (int i = 0; i < iRet; i++) {
                     //Add Invoice total Charge to the dropdown box
                     invoiceAmountComboBox.Items.Add(ds.Tables[0].Rows[i][0].ToString());
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
 
 
         }
-
-       
-
 
         /// <summary>
         /// User drop down menu selected variables
@@ -126,15 +107,14 @@ namespace FinalProject
         public string getInfo = "";
 
 
-        private void selectButton_Click(object sender, RoutedEventArgs e)
-        {
+        private void selectButton_Click(object sender, RoutedEventArgs e) {
             ///When the user presses the "Select" button, the "Search Window" closes
             ///and the main form opens displaying the selected form
 
             ///The selected form will be captured and passed to the main form with the sInvoiceNum variable
             ///which is the variable of the "user" selected invoice
 
-            ///Create a new varible for the Main Window
+            ///Create a new variable for the Main Window
             MainWindow main = new MainWindow();
             ///Call it to show
             main.Show();
@@ -145,13 +125,12 @@ namespace FinalProject
 
         }
 
-        private void clearButton_Click(object sender, RoutedEventArgs e)
-        {
+        private void clearButton_Click(object sender, RoutedEventArgs e) {
             ///The clear button will repopulate the gridbox to it's original state showing
             ///all available invoices in list form
 
             ///It will also reset the drop down menus (combo boxes) back to it's null default. 
-           
+
             ///Create a new varible for the Main Window
             SearchWindow Search = new SearchWindow();
             ///Call it to show
@@ -161,17 +140,15 @@ namespace FinalProject
 
         }
 
-        private void invoiceIDComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void invoiceIDComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             ///Disable other drop down menu's if this is selected
-            if (invoiceIDComboBox.IsEnabled)
-            {
+            if (invoiceIDComboBox.IsEnabled) {
                 invoiceDateComboBox.IsEnabled = false;
                 invoiceAmountComboBox.IsEnabled = false;
-                
-            
+
+
             }
-            
+
             ///The two other drop down menu's will be disbled when this is being used
 
             ///When selected this combo box will show a drop down list with invoice ID's
@@ -191,11 +168,9 @@ namespace FinalProject
 
         }
 
-        private void invoiceDateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void invoiceDateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             ///Disable other drop down menu's if this is selected
-            if (invoiceDateComboBox.IsEnabled)
-            {
+            if (invoiceDateComboBox.IsEnabled) {
                 invoiceIDComboBox.IsEnabled = false;
                 invoiceAmountComboBox.IsEnabled = false;
             }
@@ -217,11 +192,9 @@ namespace FinalProject
             invoiceGrid1.ItemsSource = dt.DefaultView;
         }
 
-        private void invoiceAmountComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void invoiceAmountComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             ///Disable other drop down menu's if this is selected
-            if (invoiceDateComboBox.IsEnabled)
-            {
+            if (invoiceDateComboBox.IsEnabled) {
                 invoiceIDComboBox.IsEnabled = false;
                 invoiceDateComboBox.IsEnabled = false;
             }
@@ -246,8 +219,7 @@ namespace FinalProject
 
         }
 
-        private void invoiceGrid1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void invoiceGrid1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             ///This data grid by default will call in an sql command to populate it with
             ///a list of all Invoices available
 

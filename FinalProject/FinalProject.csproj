@@ -106,6 +106,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Bck2.jpg" />
     <Content Include="Invoice.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
