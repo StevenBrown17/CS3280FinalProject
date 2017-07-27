@@ -14,29 +14,29 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FinalProject
-{
+namespace FinalProject {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
-    {
+    public partial class MainWindow : Window {
 
         /// <summary>
         /// Create an object of type clsDataAccess to access the database
         /// </summary>
         clsDataAccess db = new clsDataAccess();
         clsSQL mydb = new clsSQL();
+        String invoiceId;
 
         DataTable dt;
 
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
+            this.invoiceId = clsUtil.invoiceId;
+            populateInvoice(invoiceId);
+            populateInventory();
         }
 
-        private void Search_Window_Click(object sender, RoutedEventArgs e)
-        {
+        private void Search_Window_Click(object sender, RoutedEventArgs e) {
             ///Create a new varible for the Search Window
             SearchWindow searchWin = new SearchWindow();
             ///Call it to show
@@ -44,22 +44,39 @@ namespace FinalProject
             ///Close the main window
             this.Close();
 
-        }
+        }//end search click
 
-        private void invoiceDataGrid2_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SearchWindow search = new SearchWindow();
-           
-            Console.Write("textbox Value: " + search.invoiceGrid1.SelectedItem);
 
-            //get query needed find invoice
-            String sQuery2= mydb.SelectInvoiceID(search.invoiceGrid1.SelectedItem.ToString());
+        private void btnInventory_Click(object sender, RoutedEventArgs e) {
+            //Brandyn Logic
+            //Open Inventory Window
+        }//end inventory click
 
-            //datatable used to fget table data. 
-            dt = db.FillSqlDataTable(sQuery2);
 
-            //fill the datagrid
-            invoiceDataGrid2.ItemsSource = dt.DefaultView;
-        }
-    }
-}
+        //method to populate inventory
+        public void populateInventory() {
+            //get data from database and load into dgInventoryItems
+            //Method should be ran in initialize method
+        }//end populateInventory()
+
+        //method to populate invoice
+        public void populateInvoice(String invoiceId) {
+            if(invoiceId != "") {
+                //pull data from database
+                //UPDATE INVOICE LABEL WITH INVOICEID - lblInvoiceId
+            } else {
+                //fields should be clear and ready for input.
+            }
+            
+        }//end populateInvoice()
+
+        public void checkDate() {
+            //check to see if there is a date in the date picker.
+            //if there is not a date selected, prevent user from adding/updating.
+        }//end checkDate
+
+
+
+
+    }//end class
+}//end namespace
