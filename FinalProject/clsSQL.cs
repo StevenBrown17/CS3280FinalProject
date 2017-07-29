@@ -103,5 +103,18 @@ namespace FinalProject
                           "WHERE ItemCode = " + ItemCode;
             return sSQL;
         }
+        
+        /// <summary>
+        /// Delete an Invoice
+        /// </summary>
+        /// <param name="sDeleteInvoice"></param>
+        /// <returns></returns>
+        public string DeleteInvoice(string sInvoiceNum)
+        {
+            string sSQL = "DELETE FROM Invoices WHERE invoiceNum = " + sInvoiceNum;
+            return sSQL;
+        }
+
+
     }//end class
 }//end namespace
