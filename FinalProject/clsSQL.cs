@@ -71,6 +71,37 @@ namespace FinalProject
             return sSQL;
         }
 
+        /*public string AddInventoryItem()
+        {
+            string sSQL = "test";
+            return sSQL;
+        }*/
 
+        /// <summary>
+        /// Deletes an entry from the ItemDesc table.
+        /// </summary>
+        /// <param name="ItemCode">Primary Key for the ItemDesc table.</param>
+        /// <returns></returns>
+        public string DeleteInventoryItem(string ItemCode)
+        {
+            string sSQL = "DELETE FROM ItemDesc " +
+                          "WHERE ItemCode = " + ItemCode;
+            return sSQL;
+        }
+
+        /// <summary>
+        /// Edit an entry from the ItemDesc table.
+        /// </summary>
+        /// <param name="ItemCode">Priamry key for the ItemDesc table.</param>
+        /// <param name="ItemDesc">Contains the description of the item.</param>
+        /// <param name="Cost">Contains the cost of the item.</param>
+        /// <returns></returns>
+        public string EditInventoryItem(string ItemCode, string ItemDesc, string Cost)
+        {
+            string sSQL = "UPDATE ItemDesc " +
+                          "SET ItemDesc = " + ItemDesc + ", Cost = " + Cost + " " +
+                          "WHERE ItemCode = " + ItemCode;
+            return sSQL;
+        }
     }//end class
 }//end namespace

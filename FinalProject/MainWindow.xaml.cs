@@ -48,8 +48,12 @@ namespace FinalProject {
 
 
         private void btnInventory_Click(object sender, RoutedEventArgs e) {
-            //Brandyn Logic
-            //Open Inventory Window
+            // Creates an EditWindow object
+            EditWindow wndEdit = new EditWindow();
+            // Shows the edit window
+            wndEdit.Show();
+            // Closes the main window
+            this.Close();
         }//end inventory click
 
 
