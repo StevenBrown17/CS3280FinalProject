@@ -27,12 +27,12 @@ namespace FinalProject {
         clsSQL mydb = new clsSQL();
         String invoiceId;
 
-        DataTable dt;
+        DataTable dtInventory, dtInvoice;
 
         public MainWindow() {
             InitializeComponent();
             this.invoiceId = clsUtil.invoiceId;
-            populateInvoice(invoiceId);
+            populateInvoice("5000");
             populateInventory();
         }
 
@@ -61,11 +61,22 @@ namespace FinalProject {
         public void populateInventory() {
             //get data from database and load into dgInventoryItems
             //Method should be ran in initialize method
+
+            String sQuery = mydb.SelectInventoryItems();
+            dtInventory = db.FillSqlDataTable(sQuery);
+
+            dgInventoryItems.ItemsSource = dtInventory.DefaultView;
+           
         }//end populateInventory()
 
         //method to populate invoice
         public void populateInvoice(String invoiceId) {
             if(invoiceId != "") {
+
+                String sQuery = mydb.SelectItemsOnInvoice(invoiceId);
+                dtInvoice = db.FillSqlDataTable(sQuery);
+
+                dgInvoiceItems.ItemsSource = dtInvoice.DefaultView;
                 //pull data from database
                 //UPDATE INVOICE LABEL WITH INVOICEID - lblInvoiceId
             } else {
@@ -79,8 +90,21 @@ namespace FinalProject {
             //if there is not a date selected, prevent user from adding/updating.
         }//end checkDate
 
+        private void btnAddInventory_Click(object sender, RoutedEventArgs e) {
+            
+            DataRowView dataRow = (DataRowView)dgInventoryItems.SelectedItem;
+            //int index = dgInventoryItems.CurrentCell.Column.DisplayIndex;
+            string item = dataRow.Row.ItemArray[0].ToString();
+            string cost = dataRow.Row.ItemArray[1].ToString();
+            DataRow dr = dtInvoice.NewRow();
+            dr[0] = item;
+            dr[1] = cost;
+            dtInvoice.Rows.Add(dr);
+            //dgInvoiceItems.Items.Add(new Item {item = dataRow.Row.ItemArray[0].ToString(), price = dataRow.Row.ItemArray[1].ToString() });
+        }
 
 
 
     }//end class
+
 }//end namespace

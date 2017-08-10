@@ -45,7 +45,7 @@
                 <DropShadowEffect ShadowDepth="3"/>
             </Label.Effect>
         </Label>
-        <DataGrid x:Name="dgInventoryItems" HorizontalAlignment="Left" Height="269" Margin="10,147,0,0" VerticalAlignment="Top" Width="181"/>
+        <DataGrid x:Name="dgInventoryItems" HorizontalAlignment="Left" Height="269" Margin="10,147,0,0" VerticalAlignment="Top" Width="228"/>
         <Label Content="Inventory:" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.374,0.486" FontSize="16" Width="93" Foreground="White" FontWeight="Bold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="3"/>
@@ -59,12 +59,12 @@
                 <DropShadowEffect ShadowDepth="3"/>
             </Label.Effect>
         </Label>
-        <Button Content="Add" HorizontalAlignment="Left" Margin="116,426,0,0" VerticalAlignment="Top" Width="75" Background="#FF0A047E" Foreground="White" FontWeight="Bold">
+        <Button x:Name="btnAddInventory" Content="Add" HorizontalAlignment="Left" Margin="163,426,0,0" VerticalAlignment="Top" Width="75" Background="#FF0A047E" Foreground="White" FontWeight="Bold" Click="btnAddInventory_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button Content="Remove Item" HorizontalAlignment="Left" Margin="534,426,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnRemoveItem" Content="Remove Item" HorizontalAlignment="Left" Margin="534,426,0,0" VerticalAlignment="Top" Width="75"/>
         <Label HorizontalAlignment="Left" Margin="10,446,0,0" VerticalAlignment="Top" Width="164" Height="58">
             <Label.Content>
                 <AccessText TextWrapping="Wrap" Text="or double click item to add. remove this note before turning in" Foreground="White"/>
