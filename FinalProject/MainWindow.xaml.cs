@@ -27,13 +27,14 @@ namespace FinalProject {
         clsSQL mydb = new clsSQL();
         String invoiceId;
 
-        DataTable dtInventory, dtInvoice;
+        DataTable dtInventory, dtInvoice = new System.Data.DataTable();
 
         public MainWindow() {
             InitializeComponent();
             this.invoiceId = clsUtil.invoiceId;
             populateInvoice("5000");
             populateInventory();
+            calculateTotal();
         }
 
         private void Search_Window_Click(object sender, RoutedEventArgs e) {
@@ -66,12 +67,12 @@ namespace FinalProject {
             dtInventory = db.FillSqlDataTable(sQuery);
 
             dgInventoryItems.ItemsSource = dtInventory.DefaultView;
-           
+
         }//end populateInventory()
 
         //method to populate invoice
         public void populateInvoice(String invoiceId) {
-            if(invoiceId != "") {
+            if (invoiceId != "") {
 
                 String sQuery = mydb.SelectItemsOnInvoice(invoiceId);
                 dtInvoice = db.FillSqlDataTable(sQuery);
@@ -81,8 +82,13 @@ namespace FinalProject {
                 //UPDATE INVOICE LABEL WITH INVOICEID - lblInvoiceId
             } else {
                 //fields should be clear and ready for input.
+                dtInvoice.Columns.Add();
+                dtInvoice.Columns.Add();
+
+                dgInvoiceItems.ItemsSource = dtInvoice.DefaultView;
             }
-            
+
+
         }//end populateInvoice()
 
         public void checkDate() {
@@ -91,7 +97,7 @@ namespace FinalProject {
         }//end checkDate
 
         private void btnAddInventory_Click(object sender, RoutedEventArgs e) {
-            
+
             DataRowView dataRow = (DataRowView)dgInventoryItems.SelectedItem;
             //int index = dgInventoryItems.CurrentCell.Column.DisplayIndex;
             string item = dataRow.Row.ItemArray[0].ToString();
@@ -100,7 +106,29 @@ namespace FinalProject {
             dr[0] = item;
             dr[1] = cost;
             dtInvoice.Rows.Add(dr);
+            calculateTotal();
             //dgInvoiceItems.Items.Add(new Item {item = dataRow.Row.ItemArray[0].ToString(), price = dataRow.Row.ItemArray[1].ToString() });
+        }
+
+        private void btnRemoveItem_Click(object sender, RoutedEventArgs e) {
+
+            int index = dgInvoiceItems.SelectedIndex;
+            dtInvoice.Rows.RemoveAt(index);
+
+            calculateTotal();
+        }
+
+        public void calculateTotal() {
+            Double total = 0.00;
+            if (dtInvoice != null) {
+                try {
+                    foreach (DataRow row in dtInvoice.Rows) {
+                        total += Double.Parse(row[1].ToString());
+                    }
+                }catch(Exception e) { }
+            }
+
+            lblTotal.Content = "$" + total;
         }
 
 

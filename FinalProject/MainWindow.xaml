@@ -35,7 +35,7 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Label Content="Total Amount:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="415,454,0,0" Height="43" Width="146" FontSize="22" Foreground="White" FontWeight="Bold">
+        <Label Content="Total Amount:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="389,454,0,0" Height="43" Width="165" FontSize="22" Foreground="White" FontWeight="Bold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="3"/>
             </Label.Effect>
@@ -64,7 +64,7 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="btnRemoveItem" Content="Remove Item" HorizontalAlignment="Left" Margin="534,426,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnRemoveItem" Content="Remove Item" HorizontalAlignment="Left" Margin="534,426,0,0" VerticalAlignment="Top" Width="75" Click="btnRemoveItem_Click"/>
         <Label HorizontalAlignment="Left" Margin="10,446,0,0" VerticalAlignment="Top" Width="164" Height="58">
             <Label.Content>
                 <AccessText TextWrapping="Wrap" Text="or double click item to add. remove this note before turning in" Foreground="White"/>
