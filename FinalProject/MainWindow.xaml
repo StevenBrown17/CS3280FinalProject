@@ -30,7 +30,7 @@
                 <DropShadowEffect ShadowDepth="3"/>
             </Label.Effect>
         </Label>
-        <Button x:Name="btnAddUpdate" Content="Add/Update" HorizontalAlignment="Left" Margin="510,502,0,0" VerticalAlignment="Top" Width="106" Height="32" Click="Search_Window_Click" FontSize="14" Foreground="White" Background="#FF0A047E" FontWeight="Bold">
+        <Button x:Name="btnAddUpdate" Content="Add/Update" HorizontalAlignment="Left" Margin="510,502,0,0" VerticalAlignment="Top" Width="106" Height="32" FontSize="14" Foreground="White" Background="#FF0A047E" FontWeight="Bold" Click="btnAddUpdate_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>

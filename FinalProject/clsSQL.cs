@@ -125,8 +125,8 @@ namespace FinalProject
 
        
 
-        public String addInvoice(String invoiceDate, String totalCharge) {
-            String SQL = "INSERT INTO LineItems ( LineItemNum, ItemCode) VALUES (" + invoiceDate + ", " + totalCharge + " );";
+        public String addInvoice(String invoiceDate, String totalCharge) { //DATE TO BE IN FORMAT MM/DD/YYY
+            String SQL = "INSERT INTO Invoices ( InvoiceDate, TotalCharge) VALUES ( #" + invoiceDate + "#, " + totalCharge + " );";
 
             return SQL;
         }
@@ -136,6 +136,25 @@ namespace FinalProject
 
             return SQL;
         }
+
+
+        public String updateDate(String date, String invoiceNum) { //DATE TO BE IN FORMAT MM/DD/YYY
+            String SQL = "UPDATE Invoices " +
+                         "SET `InvoiceDate` = #" + date + "# " +
+                         "WHERE `InvoiceNum` = " + invoiceNum + ";";
+
+            return SQL;
+        }
+
+        public String updateTotalCost(String cost, String invoiceNum) {
+            String SQL = "UPDATE Invoices " +
+                         "SET `TotalCharge` = " + cost +
+                         " WHERE `InvoiceNum` = " + invoiceNum + ";";
+
+            return SQL;
+        }
+
+
 
     }//end class
 }//end namespace

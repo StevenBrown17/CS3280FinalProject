@@ -32,10 +32,13 @@ namespace FinalProject {
 
         public MainWindow() {
             InitializeComponent();
+            invoiceDatePicker.SelectedDate = DateTime.Now.Date;
             inventoryDictionary = new Dictionary<String, String>();
-            this.invoiceId = clsUtil.invoiceId;
+            //this.invoiceId = clsUtil.invoiceId;
+            //TODO
+            invoiceId = "5000"; ////!!!!REMOVE THIS CODE ONCE SEARCH WINDOW IS RETURNING A INVOICENUM!!!
             populateInvoice(invoiceId);
-            //populateInvoice("5000");
+
             populateInventory();
             calculateTotal();
         }
@@ -110,10 +113,6 @@ namespace FinalProject {
 
         }//end populateInvoice()
 
-        public void checkDate() {
-            //check to see if there is a date in the date picker.
-            //if there is not a date selected, prevent user from adding/updating.
-        }//end checkDate
 
         private void btnAddInventory_Click(object sender, RoutedEventArgs e) {
 
@@ -137,7 +136,42 @@ namespace FinalProject {
             calculateTotal();
         }
 
-        public void calculateTotal() {
+        private void btnAddUpdate_Click(object sender, RoutedEventArgs e) {
+            DataSet ds = new DataSet();
+            if(invoiceId != "") {
+
+                int iRet=0;                
+                String sSQL = mydb.updateDate(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), invoiceId);
+                //ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+                System.Console.WriteLine(sSQL);
+
+                sSQL = mydb.updateTotalCost(calculateTotal() + "", invoiceId);
+                //ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+
+                System.Console.WriteLine(sSQL);
+
+
+                //foreach (DataRow dr in dtInvoice.Rows) {
+                //    foreach (DataColumn col in dtInvoice.Columns) {
+                //        Console.Write(dr[col.ColumnName] + " ");
+                //    }
+                //    Console.WriteLine();
+                //}
+
+                for (int i = 0; i < dtInvoice.Rows.Count; i++) {
+                    sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
+                    System.Console.WriteLine(sSQL);
+
+                }
+
+
+
+            } else {
+
+            }
+        }
+
+        public double calculateTotal() {
             Double total = 0.00;
             if (dtInvoice != null) {
                 try {
@@ -148,6 +182,7 @@ namespace FinalProject {
             }
 
             lblTotal.Content = "$" + total;
+            return total;
         }
 
 
