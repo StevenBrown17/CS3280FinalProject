@@ -26,19 +26,22 @@ namespace FinalProject {
         clsDataAccess db = new clsDataAccess();
         clsSQL mydb = new clsSQL();
         String invoiceId;
+        Dictionary<String, String> inventoryDictionary;
 
         DataTable dtInventory, dtInvoice = new System.Data.DataTable();
 
         public MainWindow() {
             InitializeComponent();
+            inventoryDictionary = new Dictionary<String, String>();
             this.invoiceId = clsUtil.invoiceId;
-            populateInvoice("5000");
+            populateInvoice(invoiceId);
+            //populateInvoice("5000");
             populateInventory();
             calculateTotal();
         }
 
         private void Search_Window_Click(object sender, RoutedEventArgs e) {
-            ///Create a new varible for the Search Window
+            ///Create a new variable for the Search Window
             SearchWindow searchWin = new SearchWindow();
             ///Call it to show
             searchWin.Show();
@@ -68,22 +71,38 @@ namespace FinalProject {
 
             dgInventoryItems.ItemsSource = dtInventory.DefaultView;
 
+            foreach (DataRow row in dtInventory.Rows) {
+                inventoryDictionary.Add(row[1].ToString(), row[0].ToString());
+            }
+            System.Console.WriteLine("Dictionary");
+
         }//end populateInventory()
 
         //method to populate invoice
         public void populateInvoice(String invoiceId) {
             if (invoiceId != "") {
+                lblInvoiceNumber.Content = invoiceId;
 
                 String sQuery = mydb.SelectItemsOnInvoice(invoiceId);
                 dtInvoice = db.FillSqlDataTable(sQuery);
 
                 dgInvoiceItems.ItemsSource = dtInvoice.DefaultView;
+
+                int iRet = 0;
+                DataSet ds = new DataSet();
+                String sSQL = mydb.SelectInvoiceDateFromNum(invoiceId);
+                ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+                String date = ds.Tables[0].Rows[0][0].ToString();
+
+                invoiceDatePicker.SelectedDate = DateTime.Parse(date);
+
+
                 //pull data from database
                 //UPDATE INVOICE LABEL WITH INVOICEID - lblInvoiceId
             } else {
                 //fields should be clear and ready for input.
-                dtInvoice.Columns.Add();
-                dtInvoice.Columns.Add();
+                dtInvoice.Columns.Add("ItemDesc");
+                dtInvoice.Columns.Add("Cost");
 
                 dgInvoiceItems.ItemsSource = dtInvoice.DefaultView;
             }
@@ -100,8 +119,8 @@ namespace FinalProject {
 
             DataRowView dataRow = (DataRowView)dgInventoryItems.SelectedItem;
             //int index = dgInventoryItems.CurrentCell.Column.DisplayIndex;
-            string item = dataRow.Row.ItemArray[0].ToString();
-            string cost = dataRow.Row.ItemArray[1].ToString();
+            string item = dataRow.Row.ItemArray[1].ToString();
+            string cost = dataRow.Row.ItemArray[2].ToString();
             DataRow dr = dtInvoice.NewRow();
             dr[0] = item;
             dr[1] = cost;

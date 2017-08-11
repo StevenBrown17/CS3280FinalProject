@@ -66,9 +66,17 @@ namespace FinalProject
         /// </summary>
         /// <returns></returns>
         public String SelectInventoryItems() {
-            String sSQL = "SELECT ItemDesc.ItemDesc, ItemDesc.Cost " +
+            String sSQL = "SELECT ItemDesc.ItemCode,ItemDesc.ItemDesc, ItemDesc.Cost " +
                           "FROM ItemDesc;";
             return sSQL;
+        }
+
+        public String SelectInvoiceDateFromNum(String invoiceNum) {
+            String SQL = "SELECT Invoices.[InvoiceDate] "+
+                         "FROM Invoices " +
+                         "WHERE Invoices.InvoiceNum = "+invoiceNum +";";
+
+            return SQL;
         }
 
         /*public string AddInventoryItem()
@@ -115,6 +123,19 @@ namespace FinalProject
             return sSQL;
         }
 
+       
+
+        public String addInvoice(String invoiceDate, String totalCharge) {
+            String SQL = "INSERT INTO LineItems ( LineItemNum, ItemCode) VALUES (" + invoiceDate + ", " + totalCharge + " );";
+
+            return SQL;
+        }
+
+        public string addLineItem(String invoiceNum, String lineItemNum, String itemCode) {
+            String SQL = "INSERT INTO LineItems ( InvoiceNum, LineItemNum, ItemCode) VALUES (" + invoiceNum +", " + lineItemNum + ", " + itemCode + " );";
+
+            return SQL;
+        }
 
     }//end class
 }//end namespace
