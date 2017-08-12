@@ -10,22 +10,22 @@
         <ImageBrush ImageSource="Bck2.jpg"/>
     </Window.Background>
     <Grid Margin="10,10,17,12" RenderTransformOrigin="0.551,0.622">
-        <Button x:Name="Search_Window" Content="Search Invoice" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="106" Height="32" Click="Search_Window_Click" FontSize="14" Background="#FF0A047E" Foreground="White" FontWeight="Bold">
+        <Button x:Name="Search_Window" Content="Search Invoice" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="134" Height="32" Click="Search_Window_Click" FontSize="14" Background="#FF0A047E" Foreground="White" FontWeight="Bold">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="btnInventory" Content="Edit Inventory" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" Width="106" Height="32" Click="btnInventory_Click" FontSize="14" Background="#FF0A047E" Foreground="White" FontWeight="Bold">
+        <Button x:Name="btnInventory" Content="Edit Inventory" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="134" Height="32" Click="btnInventory_Click" FontSize="14" Background="#FF0A047E" Foreground="White" FontWeight="Bold">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Label Content="Invoice ID:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="443,17,0,0" Height="39" Width="118" FontSize="22" Foreground="White" FontWeight="Bold">
+        <Label Content="Invoice ID:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="405,17,0,0" Height="39" Width="140" FontSize="22" Foreground="White" FontWeight="Bold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="3"/>
             </Label.Effect>
         </Label>
-        <Label x:Name="lblInvoiceNumber" Content="TBD" HorizontalAlignment="Left" Margin="566,17,0,0" VerticalAlignment="Top" FontSize="22" RenderTransformOrigin="0.427,0.339" Foreground="White" FontWeight="Bold">
+        <Label x:Name="lblInvoiceNumber" Content="TBD" HorizontalAlignment="Left" Margin="554,17,0,0" VerticalAlignment="Top" FontSize="22" RenderTransformOrigin="0.427,0.339" Foreground="White" FontWeight="Bold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="3"/>
             </Label.Effect>

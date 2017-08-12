@@ -159,6 +159,17 @@ namespace FinalProject
             return SQL;
         }
 
+        // <summary>
+        /// SQL query to get all the invoice #'s by date ***ADDED BY Martha
+        /// </summary>
+        /// <returns></returns>
+        public string invoiceWithDate(String sDate)
+        {
+            string sSQL = "SELECT Invoices.InvoiceNum, Invoices.InvoiceDate "
+                           + "FROM ItemDesc INNER JOIN (Invoices INNER JOIN LineItems ON Invoices.InvoiceNum = LineItems.InvoiceNum) ON ItemDesc.ItemCode = LineItems.ItemCode "
+                           + "WHERE(((Invoices.InvoiceDate) =#" + sDate + "#))";
+            return sSQL;
+        }
 
 
     }//end class

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Reflection; 
 
 namespace FinalProject {
     /// <summary>
@@ -30,28 +31,76 @@ namespace FinalProject {
 
         DataTable dtInventory, dtInvoice = new System.Data.DataTable();
 
+        /// <summary>
+        /// searchWindow object ***ADDED by Martha
+        /// </summary>
+        SearchWindow searchWin;
+
+        /// <summary>
+        /// used to keep get InvoiceID ***ADDED BY Martha
+        /// </summary>
+        String sInvoiceNum;
+
         public MainWindow() {
             InitializeComponent();
             invoiceDatePicker.SelectedDate = DateTime.Now.Date;
             inventoryDictionary = new Dictionary<String, String>();
             //this.invoiceId = clsUtil.invoiceId;
-            //TODO
-            invoiceId = "5019"; ////TODO !!!!REMOVE THIS CODE ONCE SEARCH WINDOW IS RETURNING A INVOICENUM!!!
-            populateInvoice(invoiceId);
 
             populateInventory();
             calculateTotal();
         }
 
+        /// <summary>
+        /// Search Window Click ***EDITED BY Martha
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Search_Window_Click(object sender, RoutedEventArgs e) {
-            ///Create a new variable for the Search Window
-            SearchWindow searchWin = new SearchWindow();
-            ///Call it to show
-            searchWin.Show();
-            ///Close the main window
-            this.Close();
+            try
+            {
+                //instantiate search window
+                searchWin = new SearchWindow();
+
+                //launches the searchWindow to find and retrieve InvoiceID
+                searchWin.ShowDialog();
+
+                //sets the returned InvoiceID
+                sInvoiceNum = searchWin.sInvoiceNum;
+                Console.WriteLine("InvoiceID = " + sInvoiceNum);
+
+                invoiceId = sInvoiceNum;
+                populateInvoice(invoiceId);
+                searchWin.Close();
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
 
         }//end search click
+
+        /// <summary>
+        /// Handle the error ***ADDED BY Martha
+        /// </summary>
+        /// <param name="sClass">The class in which the error occurred in.</param>
+        /// <param name="sMethod">The method in which the error occurred in.</param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                //Would write to a file or database here.
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
+                                             "HandleError Exception: " + ex.Message);
+            }
+        }
+
 
 
         private void btnInventory_Click(object sender, RoutedEventArgs e) {
