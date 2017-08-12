@@ -100,7 +100,7 @@ namespace FinalProject
         /// <summary>
         /// Edit an entry from the ItemDesc table.
         /// </summary>
-        /// <param name="ItemCode">Priamry key for the ItemDesc table.</param>
+        /// <param name="ItemCode">primary key for the ItemDesc table.</param>
         /// <param name="ItemDesc">Contains the description of the item.</param>
         /// <param name="Cost">Contains the cost of the item.</param>
         /// <returns></returns>
@@ -119,11 +119,16 @@ namespace FinalProject
         /// <returns></returns>
         public string DeleteInvoice(string sInvoiceNum)
         {
-            string sSQL = "DELETE FROM Invoices WHERE invoiceNum = " + sInvoiceNum;
+            string sSQL = "DELETE * FROM Invoices WHERE invoiceNum = " + sInvoiceNum;
             return sSQL;
         }
 
-       
+        public string DeleteLineItems(string sInvoiceNum) {
+            string sSQL = "DELETE * FROM LineItems WHERE `invoiceNum` = " + sInvoiceNum;
+            return sSQL;
+        }
+
+
 
         public String addInvoice(String invoiceDate, String totalCharge) { //DATE TO BE IN FORMAT MM/DD/YYY
             String SQL = "INSERT INTO Invoices ( InvoiceDate, TotalCharge) VALUES ( #" + invoiceDate + "#, " + totalCharge + " );";
@@ -132,7 +137,7 @@ namespace FinalProject
         }
 
         public string addLineItem(String invoiceNum, String lineItemNum, String itemCode) {
-            String SQL = "INSERT INTO LineItems ( InvoiceNum, LineItemNum, ItemCode) VALUES (" + invoiceNum +", " + lineItemNum + ", " + itemCode + " );";
+            String SQL = "INSERT INTO LineItems ( InvoiceNum, LineItemNum, ItemCode) VALUES (" + invoiceNum +", " + lineItemNum + ", '" + itemCode + "' );";
 
             return SQL;
         }

@@ -36,7 +36,7 @@ namespace FinalProject {
             inventoryDictionary = new Dictionary<String, String>();
             //this.invoiceId = clsUtil.invoiceId;
             //TODO
-            invoiceId = "5000"; ////!!!!REMOVE THIS CODE ONCE SEARCH WINDOW IS RETURNING A INVOICENUM!!!
+            invoiceId = "5019"; ////TODO !!!!REMOVE THIS CODE ONCE SEARCH WINDOW IS RETURNING A INVOICENUM!!!
             populateInvoice(invoiceId);
 
             populateInventory();
@@ -137,39 +137,57 @@ namespace FinalProject {
         }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e) {
-            DataSet ds = new DataSet();
-            if(invoiceId != "") {
 
-                int iRet=0;                
+            if (invoiceDatePicker.SelectedDate == null) { invoiceDatePicker.SelectedDate = DateTime.Now.Date; }// if no date is picked, default to today
+
+            if (invoiceId != "") {
+
+                //TODO Figure out why this isn't writing
+                //updates the date, even if there were no changes. 
                 String sSQL = mydb.updateDate(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), invoiceId);
-                //ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+                db.ExecuteNonQuery(sSQL);
                 System.Console.WriteLine(sSQL);
 
+                //updates the cost of the associated invoiceId
                 sSQL = mydb.updateTotalCost(calculateTotal() + "", invoiceId);
-                //ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+                db.ExecuteNonQuery(sSQL);
 
                 System.Console.WriteLine(sSQL);
 
+                //removing all LineItems associated with that invoice number, and adding them again with the added/removed items
+                sSQL = mydb.DeleteLineItems(invoiceId);
+                db.ExecuteNonQuery(sSQL);
 
-                //foreach (DataRow dr in dtInvoice.Rows) {
-                //    foreach (DataColumn col in dtInvoice.Columns) {
-                //        Console.Write(dr[col.ColumnName] + " ");
-                //    }
-                //    Console.WriteLine();
-                //}
-
+                //grabs the data from the DataTable, runs a sql statement adding each line individually.
                 for (int i = 0; i < dtInvoice.Rows.Count; i++) {
                     sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
                     System.Console.WriteLine(sSQL);
-
+                    db.ExecuteNonQuery(sSQL);
                 }
 
 
 
             } else {
+                //TODO Figure out why this isn't writing
+                /*
+                 * DO I USE ExecuteScalarSQL   or    ExecuteNonQuery
+                 * Code here for adding to database when no InvoiceId was given.
+                 */
 
-            }
-        }
+                String sSQL = mydb.addInvoice(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), calculateTotal() + "");
+                db.ExecuteScalarSQL(sSQL);
+                invoiceId = db.ExecuteScalarSQL("select max(InvoiceNum) from invoices") +"";
+
+                for (int i = 0; i < dtInvoice.Rows.Count; i++) {
+                    sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
+                    System.Console.WriteLine(sSQL);
+                    db.ExecuteScalarSQL(sSQL);
+                }
+
+
+            }//end else
+
+        }//end add/update click
 
         public double calculateTotal() {
             Double total = 0.00;
@@ -178,7 +196,7 @@ namespace FinalProject {
                     foreach (DataRow row in dtInvoice.Rows) {
                         total += Double.Parse(row[1].ToString());
                     }
-                }catch(Exception e) { }
+                } catch (Exception e) { }
             }
 
             lblTotal.Content = "$" + total;
