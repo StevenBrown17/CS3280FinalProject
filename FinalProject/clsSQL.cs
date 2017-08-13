@@ -207,6 +207,19 @@ namespace FinalProject
             return sSQL;
         }
 
+        /// <summary>
+        /// Method to Generate the SQL statement to select the
+        /// date of an invoice
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public string SelectInvoiceDate2(string sDate) {
+            string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + sDate + "#";
+
+            return sSQL;
+        }
+
 
     }//end class
 }//end namespace
