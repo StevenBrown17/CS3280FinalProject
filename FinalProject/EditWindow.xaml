@@ -63,6 +63,11 @@
                 </Button.Effect>
             </Button>
         </Canvas>
+        <Label x:Name="lblErrorCantDeleteItem" Content="Can't delete an item that is in an invoice." HorizontalAlignment="Left" Margin="639,480,-107,0" VerticalAlignment="Top" FontFamily="Book Antiqua" FontSize="18" Foreground="#FFF9F8F8" FontWeight="Bold" Width="460" Height="56" Visibility="Hidden">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
 
     </Grid>
 </Window>

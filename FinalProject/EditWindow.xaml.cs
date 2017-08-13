@@ -34,9 +34,26 @@ namespace FinalProject
         /// create a variable for a data table
         /// </summary>
         DataTable dt;
+        /// <summary>
+        /// Dictionary for inventory.
+        /// </summary>
         Dictionary<string, string> inventoryDictionary;
+        DataSet ds = new DataSet();
+        /// <summary>
+        /// Contains SQL statements.
+        /// </summary>
         string sSQL;
-        string selectedFunction;
+        /// <summary>
+        /// Returns the number of selected rows.
+        /// </summary>
+        int iRetVal = 0;
+        /// <summary>
+        /// Shows if (add/edit) is currently selected.
+        /// </summary>
+        string selectedFunction = "";
+        /// <summary>
+        /// Contains the current ItemCode.
+        /// </summary>
         string itemCode;
 
         /// <summary>
@@ -56,24 +73,31 @@ namespace FinalProject
         /// <param name="e"></param>
         private void btnReturnToMain_Click(object sender, RoutedEventArgs e)
         {
-            // Creates a MainWindow object
-            MainWindow wndMain = new MainWindow();
-            // Shows the main window
-            wndMain.Show();
-            // Closes the edit window
             this.Close();
         }
 
+        /// <summary>
+        /// Populates datagrid with all items.
+        /// </summary>
         private void populateDatagridInv()
         {
-            sSQL = mydb.SelectInventoryItems();
-            dt = db.FillSqlDataTable(sSQL);
-
-            dataGrid.ItemsSource = dt.DefaultView;
-
-            foreach(DataRow row in dt.Rows)
+            try
             {
-                inventoryDictionary.Add(row[1].ToString(), row[0].ToString());
+                // Gets all items from the database
+                sSQL = mydb.SelectInventoryItems();
+                dt = db.FillSqlDataTable(sSQL);
+
+                dataGrid.ItemsSource = dt.DefaultView;
+
+                // Inserts items into the datagrid.
+                foreach (DataRow row in dt.Rows)
+                {
+                    inventoryDictionary.Add(row[1].ToString(), row[0].ToString());
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
         }
 
@@ -84,17 +108,27 @@ namespace FinalProject
         /// <param name="e"></param>
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {
-            selectedFunction = "Add";
-            DescriptionCostCanvas.Visibility = Visibility.Visible;
-            clear();
+            try
+            {
+                selectedFunction = "Add";
+                DescriptionCostCanvas.Visibility = Visibility.Visible;
+                lblErrorCantDeleteItem.Visibility = Visibility.Hidden;
+                clear();
 
-            // Make description and cost textboxes editable
-            txtItemDesc.IsReadOnly = false;
-            txtItemCost.IsReadOnly = false;
-            dataGrid.IsEnabled = false;
-            btnAddItem.IsEnabled = false;
-            btnEditItem.IsEnabled = false;
-            btnDeleteItem.IsEnabled = false;
+                // Make description and cost textboxes editable
+                txtItemDesc.IsReadOnly = false;
+                txtItemCost.IsReadOnly = false;
+
+                // Disallows the user from using the datagrid and function buttons.
+                dataGrid.IsEnabled = false;
+                btnAddItem.IsEnabled = false;
+                btnEditItem.IsEnabled = false;
+                btnDeleteItem.IsEnabled = false;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }
 
         /// <summary>
@@ -104,16 +138,26 @@ namespace FinalProject
         /// <param name="e"></param>
         private void btnEditItem_Click(object sender, RoutedEventArgs e)
         {
-            selectedFunction = "Edit";
-            // When an item is updated, only update description and cost. This will be done through SQL.
+            try
+            {
+                selectedFunction = "Edit";
 
-            DescriptionCostCanvas.Visibility = Visibility.Visible;
+                DescriptionCostCanvas.Visibility = Visibility.Visible;
+                lblErrorCantDeleteItem.Visibility = Visibility.Hidden;
 
-            txtItemDesc.IsReadOnly = false;
-            txtItemCost.IsReadOnly = false;
-            btnAddItem.IsEnabled = false;
-            btnEditItem.IsEnabled = false;
-            btnDeleteItem.IsEnabled = false;
+                // Make description and cost textboxes editable
+                txtItemDesc.IsReadOnly = false;
+                txtItemCost.IsReadOnly = false;
+
+                // Disallows the user from using the function buttons.
+                btnAddItem.IsEnabled = false;
+                btnEditItem.IsEnabled = false;
+                btnDeleteItem.IsEnabled = false;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }
 
         /// <summary>
@@ -123,42 +167,37 @@ namespace FinalProject
         /// <param name="e"></param>
         private void btnDeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            selectedFunction = "Delete";
-            // Prevent user from deleting an item that is in the current invoice.
-            // Display a warning message to the user.
-            // Delete item from database using SQL.
-
-            /*btnAddItem.IsEnabled = false;
-            btnEditItem.IsEnabled = false;
-            btnDeleteItem.IsEnabled = false;
-            btnSave.IsEnabled = true;*/
-
             try
             {
-                ///check to see what the message box is showing
-                if (MessageBox.Show("Are you sure you want to delete item: " + txtItemDesc.Text + "?", "Delete item?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                // Prevent user from deleting an item that is in the current invoice.
+                // Display a warning message to the user.
+                // Delete item from database using SQL.
+
+                lblErrorCantDeleteItem.Visibility = Visibility.Hidden;
+
+                sSQL = mydb.CheckIfItemIsInAnInvoice(itemCode);
+                ds = db.ExecuteSQLStatement(sSQL, ref iRetVal);
+
+                if(iRetVal == 0)
                 {
-                    //do no stuff
+                    ///check to see what the message box is showing
+                    if (MessageBox.Show("Are you sure you want to delete item: " + txtItemDesc.Text + "?", "Delete item?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                    {
+                        //do no stuff
+                    }
+                    else
+                    {
+                        sSQL = mydb.DeleteInventoryItem(itemCode);
+                        db.ExecuteNonQuery(sSQL);
+
+                        EditWindow ew = new EditWindow();
+                        ew.Show();
+                        this.Close();
+                    }
                 }
                 else
                 {
-                    ///if that fails do this
-                    /*String sSQL = mydb.DeleteLineItems(invoiceId);
-                    db.ExecuteNonQuery(sSQL);
-
-                    sSQL = mydb.DeleteInvoice(invoiceId);
-                    db.ExecuteNonQuery(sSQL);
-
-                    //easiest way to reset all values is to open a new window.
-                    MainWindow mw = new MainWindow();
-                    mw.Show();
-                    this.Close();*/
-                    sSQL = mydb.DeleteInventoryItem(itemCode);
-                    db.ExecuteNonQuery(sSQL);
-
-                    EditWindow ew = new EditWindow();
-                    ew.Show();
-                    this.Close();
+                    lblErrorCantDeleteItem.Visibility = Visibility.Visible;
                 }
             }
             catch (Exception)
@@ -174,21 +213,33 @@ namespace FinalProject
         /// <param name="e"></param>
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Populate item description textbox.
-            if(dataGrid.SelectedIndex != -1)
+            try
             {
-                DataRowView row = (DataRowView)dataGrid.SelectedItems[0];
-
-                // Set item code.
-                itemCode = row[0].ToString();
-
                 // Populate item description textbox.
-                txtItemDesc.Text = row[1].ToString();
+                if (dataGrid.SelectedIndex != -1)
+                {
+                    lblErrorCantDeleteItem.Visibility = Visibility.Hidden;
 
-                // Populate item cost textbox.
-                txtItemCost.Text = row[2].ToString();
+                    DataRowView row = (DataRowView)dataGrid.SelectedItems[0];
 
-                btnDeleteItem.IsEnabled = true;
+                    // Set item code.
+                    itemCode = row[0].ToString();
+
+                    // Populate item description textbox.
+                    txtItemDesc.Text = row[1].ToString();
+
+                    // Populate item cost textbox.
+                    txtItemCost.Text = row[2].ToString();
+
+                    if (selectedFunction == "")
+                    {
+                        btnDeleteItem.IsEnabled = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
         }
 
@@ -199,15 +250,23 @@ namespace FinalProject
         /// <param name="e"></param>
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            clear();
-
-            DescriptionCostCanvas.Visibility = Visibility.Hidden;
-            txtItemDesc.IsReadOnly = true;
-            txtItemCost.IsReadOnly = true;
-            dataGrid.IsEnabled = true;
-            btnAddItem.IsEnabled = true;
-            btnEditItem.IsEnabled = true;
-            btnDeleteItem.IsEnabled = false;
+            try
+            {
+                clear();
+                
+                DescriptionCostCanvas.Visibility = Visibility.Hidden;
+                txtItemDesc.IsReadOnly = true;
+                txtItemCost.IsReadOnly = true;
+                dataGrid.IsEnabled = true;
+                btnAddItem.IsEnabled = true;
+                btnEditItem.IsEnabled = true;
+                btnDeleteItem.IsEnabled = false;
+                selectedFunction = "";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }
 
         /// <summary>
@@ -215,16 +274,23 @@ namespace FinalProject
         /// </summary>
         private void clear()
         {
-            // Deselects all cells.
-            dataGrid.UnselectAllCells();
+            try
+            {
+                // Deselects all cells.
+                dataGrid.UnselectAllCells();
 
-            // Removes all text from textboxes.
-            txtItemDesc.Text = "";
-            txtItemCost.Text = "";
+                // Removes all text from textboxes.
+                txtItemDesc.Text = "";
+                txtItemCost.Text = "";
 
-            // Disables the save button and datagrid.
-            btnSave.IsEnabled = false;
-            dataGrid.IsEnabled = true;
+                // Disables the save button and datagrid.
+                btnSave.IsEnabled = false;
+                dataGrid.IsEnabled = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }
 
         /// <summary>
@@ -234,35 +300,39 @@ namespace FinalProject
         /// <param name="e"></param>
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            switch (selectedFunction)
+            try
             {
-                case "Add":
-                    sSQL = mydb.AddInventoryItem(txtItemDesc.Text, txtItemCost.Text);
-                    db.ExecuteNonQuery(sSQL);
-                    break;
-                case "Edit":
-                    sSQL = mydb.EditInventoryItem(itemCode, txtItemDesc.Text, txtItemCost.Text);
-                    db.ExecuteNonQuery(sSQL);
-                    break;
-                case "Delete":
-                    sSQL = mydb.DeleteInventoryItem(itemCode);
-                    db.ExecuteNonQuery(sSQL);
-                    break;
-                default:
-                    break;
+                // Executes the add/edit function.
+                switch (selectedFunction)
+                {
+                    case "Add":
+                        sSQL = mydb.AddInventoryItem(txtItemDesc.Text, txtItemCost.Text);
+                        db.ExecuteNonQuery(sSQL);
+                        break;
+                    case "Edit":
+                        sSQL = mydb.EditInventoryItem(itemCode, txtItemDesc.Text, txtItemCost.Text);
+                        db.ExecuteNonQuery(sSQL);
+                        break;
+                    default:
+                        break;
+                }
+
+                clear();
+
+                txtItemDesc.IsReadOnly = true;
+                txtItemCost.IsReadOnly = true;
+                btnAddItem.IsEnabled = true;
+                btnEditItem.IsEnabled = true;
+                btnDeleteItem.IsEnabled = true;
+                DescriptionCostCanvas.Visibility = Visibility.Hidden;
+
+                inventoryDictionary = new Dictionary<string, string>();
+                populateDatagridInv();
             }
-            
-            clear();
-
-            txtItemDesc.IsReadOnly = true;
-            txtItemCost.IsReadOnly = true;
-            btnAddItem.IsEnabled = true;
-            btnEditItem.IsEnabled = true;
-            btnDeleteItem.IsEnabled = true;
-            DescriptionCostCanvas.Visibility = Visibility.Hidden;
-
-            inventoryDictionary = new Dictionary<string, string>();
-            populateDatagridInv();
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }
 
         /// <summary>
@@ -272,8 +342,15 @@ namespace FinalProject
         /// <param name="e"></param>
         private void previewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }
 
         /// <summary>
@@ -283,16 +360,23 @@ namespace FinalProject
         /// <param name="e"></param>
         private void textChanged(object sender, TextChangedEventArgs e)
         {
-            if(btnAddItem.IsEnabled == false || btnEditItem.IsEnabled == false)
+            try
             {
-                if (txtItemDesc.Text != "" && txtItemCost.Text != "")
+                if (btnAddItem.IsEnabled == false || btnEditItem.IsEnabled == false)
                 {
-                    btnSave.IsEnabled = true;
+                    if (txtItemDesc.Text != "" && txtItemCost.Text != "")
+                    {
+                        btnSave.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnSave.IsEnabled = false;
+                    }
                 }
-                else
-                {
-                    btnSave.IsEnabled = false;
-                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
         }
     }

@@ -128,12 +128,22 @@ namespace FinalProject {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnInventory_Click(object sender, RoutedEventArgs e) {
-            // Creates an EditWindow object
-            EditWindow wndEdit = new EditWindow();
-            // Shows the edit window
-            wndEdit.Show();
-            // Closes the main window
-            this.Close();
+            try
+            {
+                // Creates an EditWindow object
+                EditWindow wndEdit = new EditWindow();
+                // Shows the edit window
+                wndEdit.ShowDialog();
+                // Closes the main window
+                wndEdit.Close();
+
+                inventoryDictionary = new Dictionary<string, string>();
+                populateInventory();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }//end inventory click
 
 

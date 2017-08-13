@@ -91,6 +91,25 @@ namespace FinalProject
             return SQL;
         }
 
+        /// <summary>
+        /// Finds if item is in an invoice.
+        /// </summary>
+        /// <param name="ItemCode"></param>
+        /// <returns></returns>
+        public string CheckIfItemIsInAnInvoice(string ItemCode)
+        {
+            string sSQL = "SELECT DISTINCT ItemCode " +
+                          "FROM LineItems " +
+                          "WHERE ItemCode = " + ItemCode;
+            return sSQL;
+        }
+
+        /// <summary>
+        /// Adds an inventory item to the database.
+        /// </summary>
+        /// <param name="ItemDesc"></param>
+        /// <param name="Cost"></param>
+        /// <returns></returns>
         public string AddInventoryItem(string ItemDesc, string Cost)
         {
             string sSQL = "INSERT INTO ItemDesc(ItemDesc, Cost) " +
