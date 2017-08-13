@@ -79,11 +79,13 @@ namespace FinalProject
             return SQL;
         }
 
-        /*public string AddInventoryItem()
+        public string AddInventoryItem(string ItemDesc, string Cost)
         {
-            string sSQL = "test";
+            string sSQL = "INSERT INTO ItemDesc(ItemDesc, Cost) " +
+                          "VALUES('" + ItemDesc + "', " + Cost + ");";
+
             return sSQL;
-        }*/
+        }
 
         /// <summary>
         /// Deletes an entry from the ItemDesc table.
@@ -107,8 +109,8 @@ namespace FinalProject
         public string EditInventoryItem(string ItemCode, string ItemDesc, string Cost)
         {
             string sSQL = "UPDATE ItemDesc " +
-                          "SET ItemDesc = " + ItemDesc + ", Cost = " + Cost + " " +
-                          "WHERE ItemCode = " + ItemCode;
+                          "SET ItemDesc = '" + ItemDesc + "', Cost = " + Cost +
+                          " WHERE ItemCode = " + ItemCode;
             return sSQL;
         }
         

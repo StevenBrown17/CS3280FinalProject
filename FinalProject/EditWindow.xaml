@@ -13,17 +13,17 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnAddItem" Content="Add Item" HorizontalAlignment="Left" Margin="252,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnAddItem_Click">
+        <Button x:Name="btnAddItem" Content="Add Item" HorizontalAlignment="Left" Margin="150,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnAddItem_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="btnEditItem" Content="Edit Item" HorizontalAlignment="Left" Margin="416,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnEditItem_Click">
+        <Button x:Name="btnEditItem" Content="Edit Item" HorizontalAlignment="Left" Margin="314,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnEditItem_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="btnDeleteItem" Content="Delete Item" HorizontalAlignment="Left" Margin="581,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnDeleteItem_Click">
+        <Button x:Name="btnDeleteItem" Content="Delete Item" HorizontalAlignment="Left" Margin="479,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnDeleteItem_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
@@ -33,12 +33,34 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="252,92,0,0" VerticalAlignment="Top" Height="361" Width="479"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="150,92,0,0" VerticalAlignment="Top" Height="361" Width="479" SelectionChanged="dataGrid_SelectionChanged" IsReadOnly="True"/>
         <Label x:Name="lblInventoryFormTitle" Content="Edit Inventory" HorizontalAlignment="Left" Margin="332,9,0,0" VerticalAlignment="Top" FontFamily="Book Antiqua" FontSize="48" Foreground="#FFF9F8F8" FontWeight="Bold">
             <Label.Effect>
                 <DropShadowEffect/>
             </Label.Effect>
         </Label>
+        <TextBox x:Name="txtItemDesc" HorizontalAlignment="Left" Height="23" Margin="697,137,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="223" IsReadOnly="True" TextChanged="textChanged"/>
+        <TextBox x:Name="txtItemCost" HorizontalAlignment="Left" Height="23" Margin="756,180,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164" IsReadOnly="True" PreviewTextInput="previewTextInput" TextChanged="textChanged"/>
+        <Label x:Name="lblItemDesc" Content="Description" HorizontalAlignment="Left" Margin="692,92,0,0" VerticalAlignment="Top" Foreground="White" FontSize="24" FontFamily="Book Antiqua" FontWeight="Bold">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
+        <Label x:Name="lblItemCost" Content="Cost:" HorizontalAlignment="Left" Margin="692,170,0,0" VerticalAlignment="Top" Foreground="White" FontSize="24" FontFamily="Book Antiqua" FontWeight="Bold">
+            <Label.Effect>
+                <DropShadowEffect/>
+            </Label.Effect>
+        </Label>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="686,254,0,0" VerticalAlignment="Top" Width="120" Background="#FF0A047E" Foreground="#FFF9F5F5" Height="32" FontSize="16" FontWeight="Bold" IsEnabled="False" Click="btnSave_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="811,254,0,0" VerticalAlignment="Top" Width="120" Background="#FF0A047E" Foreground="#FFF9F5F5" Height="32" FontSize="16" FontWeight="Bold" Click="btnClear_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
 
     </Grid>
 </Window>
