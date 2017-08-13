@@ -148,6 +148,7 @@ namespace FinalProject {
         /// <param name="invoiceId"></param>
         public void populateInvoice(String invoiceId) {
             if (invoiceId != "") {
+                btnDeleteInvoice.IsEnabled = true;
                 lblInvoiceNumber.Content = invoiceId;
 
                 String sQuery = mydb.SelectItemsOnInvoice(invoiceId);
@@ -167,6 +168,7 @@ namespace FinalProject {
                 //pull data from database
                 //UPDATE INVOICE LABEL WITH INVOICEID - lblInvoiceId
             } else {
+                btnDeleteInvoice.IsEnabled = false;
                 //fields should be clear and ready for input.
                 dtInvoice.Columns.Add("ItemDesc");
                 dtInvoice.Columns.Add("Cost");
@@ -218,7 +220,7 @@ namespace FinalProject {
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e) {
 
             if (invoiceDatePicker.SelectedDate == null) { invoiceDatePicker.SelectedDate = DateTime.Now.Date; }// if no date is picked, default to today
-
+            int count = 0;//keeps track of records inserted
             if (invoiceId != "") {
 
                 //TODO Figure out why this isn't writing
@@ -237,13 +239,16 @@ namespace FinalProject {
                 sSQL = mydb.DeleteLineItems(invoiceId);
                 db.ExecuteNonQuery(sSQL);
 
+                
                 //grabs the data from the DataTable, runs a sql statement adding each line individually.
                 for (int i = 0; i < dtInvoice.Rows.Count; i++) {
                     sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
                     System.Console.WriteLine(sSQL);
                     db.ExecuteNonQuery(sSQL);
+                    count++;
                 }
 
+                MessageBox.Show("Invoice: " + invoiceId + " added successfully!\n" + count + " items added");
 
 
             } else {
@@ -254,22 +259,42 @@ namespace FinalProject {
                  */
 
                 String sSQL = mydb.addInvoice(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), calculateTotal() + "");
-                db.ExecuteScalarSQL(sSQL);
+                db.ExecuteNonQuery(sSQL);
                 sSQL = mydb.latestInvoice();
                 invoiceId = db.ExecuteScalarSQL(sSQL);
 
                 for (int i = 0; i < dtInvoice.Rows.Count; i++) {
                     sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
                     System.Console.WriteLine(sSQL);
-                    db.ExecuteScalarSQL(sSQL);
+                    db.ExecuteNonQuery(sSQL);
+                    count++;//keeps track of items added.
                 }
 
-
+                MessageBox.Show("Invoice: " + invoiceId + " added successfully!\n" + count + " items added");
 
 
             }//end else
 
         }//end add/update click
+
+        private void btnDeleteInvoice_Click(object sender, RoutedEventArgs e) {
+            if (MessageBox.Show("Are you sure you want to delete Invoice Number: "+invoiceId +"?", "Delete Invoice?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No) {
+                //do no stuff
+            } else {
+                String sSQL = mydb.DeleteLineItems(invoiceId);
+                db.ExecuteNonQuery(sSQL);
+
+                sSQL = mydb.DeleteInvoice(invoiceId);
+                db.ExecuteNonQuery(sSQL);
+                
+                //easiest way to reset all values is to open a new window.
+                MainWindow mw = new MainWindow();
+                mw.Show();
+                this.Close();
+                
+                
+            }
+        }
 
 
         /// <summary>

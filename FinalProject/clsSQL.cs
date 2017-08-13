@@ -165,48 +165,23 @@ namespace FinalProject
             return SQL;
         }
 
-        #region old sql statements
-        //public String updateDate(String date, String invoiceNum) { //DATE TO BE IN FORMAT MM/DD/YYY
-        //    String SQL = "UPDATE Invoices " +
-        //                 "SET `InvoiceDate` = #" + date + "# " +
-        //                 "WHERE `InvoiceNum` = " + invoiceNum + ";";
 
-        //    return SQL;
-        //}
+        public String updateInvoiceDate(String date, String invoiceNum) { //DATE TO BE IN FORMAT MM/DD/YYY
+            String SQL = "UPDATE Invoices " +
+                         "SET `InvoiceDate` = #" + date + "# " +
+                         "WHERE `InvoiceNum` = " + invoiceNum + ";";
 
-        //public String updateTotalCost(String cost, String invoiceNum) {
-        //    String SQL = "UPDATE Invoices " +
-        //                 "SET `TotalCharge` = " + cost +
-        //                 " WHERE `InvoiceNum` = " + invoiceNum + ";";
-
-        //    return SQL;
-        //}
-
-        #endregion
-
-        /// <summary>
-        /// SQL query will update the date of the invoice if incorrect.
-        /// </summary>
-        /// <param name="sUpdateDate"></param>
-        /// <param name="sInvoiceID"></param>
-        /// <returns></returns>
-        public string updateInvoiceDate(String sUpdateDate, String sInvoiceID) {
-            string sSQL = "UPDATE Invoices SET date =  " + sUpdateDate
-                + "WHERE InvoiceNum = " + sInvoiceID;
-            return sSQL;
+            return SQL;
         }
 
-        /// <summary>
-        /// SQL query updates the totalCharge of a customers invoice if incorrect
-        /// </summary>
-        /// <param name="sTotalCharge"></param>
-        /// <param name="sInvoiceID"></param>
-        /// <returns></returns>
-        public string updateTotalCharge(String sTotalCharge, String sInvoiceID) {
-            string sSQL = "UPDATE Invoices SET TotalCharge =  " + sTotalCharge
-                + "WHERE InvoiceNum = " + sInvoiceID;
-            return sSQL;
+        public String updateTotalCharge(String cost, String invoiceNum) {
+            String SQL = "UPDATE Invoices " +
+                         "SET `TotalCharge` = " + cost +
+                         " WHERE `InvoiceNum` = " + invoiceNum + ";";
+
+            return SQL;
         }
+
 
         /// <summary>
         /// Gets latest invoice entered.
