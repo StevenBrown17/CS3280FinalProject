@@ -46,8 +46,10 @@ namespace FinalProject {
             invoiceDatePicker.SelectedDate = DateTime.Now.Date;
             inventoryDictionary = new Dictionary<String, String>();
             //this.invoiceId = clsUtil.invoiceId;
-
+            invoiceId = ""; //set to empty string. Methods below check this condition
             populateInventory();
+            populateInvoice(invoiceId);//this is needed to set up the table  so we can add inventory items
+            
             calculateTotal();
         }
 
@@ -71,6 +73,7 @@ namespace FinalProject {
 
                 invoiceId = sInvoiceNum;
                 populateInvoice(invoiceId);
+                calculateTotal();
                 searchWin.Close();
             }
             catch (Exception ex)
@@ -102,7 +105,11 @@ namespace FinalProject {
         }
 
 
-
+        /// <summary>
+        /// opens edit inventory window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnInventory_Click(object sender, RoutedEventArgs e) {
             // Creates an EditWindow object
             EditWindow wndEdit = new EditWindow();
@@ -113,7 +120,11 @@ namespace FinalProject {
         }//end inventory click
 
 
-        //method to populate inventory
+        /// <summary>
+        /// gets the inventory data from the database.
+        /// I am also creating a dictionary to refer back to. I use this in the Add/Update click event.
+        /// This prevents additional reads to the database to retrieve the ItemCode.
+        /// </summary>
         public void populateInventory() {
             //get data from database and load into dgInventoryItems
             //Method should be ran in initialize method
@@ -126,11 +137,15 @@ namespace FinalProject {
             foreach (DataRow row in dtInventory.Rows) {
                 inventoryDictionary.Add(row[1].ToString(), row[0].ToString());
             }
-            System.Console.WriteLine("Dictionary");
 
         }//end populateInventory()
 
-        //method to populate invoice
+
+        /// <summary>
+        /// If there is an invoice number, get the data from the database and populate the datatable and dataset.
+        /// If there is not in invoice given, set up the table to be able to accept inventory items.
+        /// </summary>
+        /// <param name="invoiceId"></param>
         public void populateInvoice(String invoiceId) {
             if (invoiceId != "") {
                 lblInvoiceNumber.Content = invoiceId;
@@ -163,6 +178,11 @@ namespace FinalProject {
         }//end populateInvoice()
 
 
+        /// <summary>
+        /// adds the selected inventory item to the invoice datatable.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddInventory_Click(object sender, RoutedEventArgs e) {
 
             DataRowView dataRow = (DataRowView)dgInventoryItems.SelectedItem;
@@ -177,6 +197,11 @@ namespace FinalProject {
             //dgInvoiceItems.Items.Add(new Item {item = dataRow.Row.ItemArray[0].ToString(), price = dataRow.Row.ItemArray[1].ToString() });
         }
 
+        /// <summary>
+        /// removes selected index of the invoice datatable.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRemoveItem_Click(object sender, RoutedEventArgs e) {
 
             int index = dgInvoiceItems.SelectedIndex;
@@ -185,6 +210,11 @@ namespace FinalProject {
             calculateTotal();
         }
 
+        /// <summary>
+        /// if given invoice id Updates the date and total charge. delete everything in the LineItem table, and write the data again with the data in the datatable
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e) {
 
             if (invoiceDatePicker.SelectedDate == null) { invoiceDatePicker.SelectedDate = DateTime.Now.Date; }// if no date is picked, default to today
@@ -193,12 +223,12 @@ namespace FinalProject {
 
                 //TODO Figure out why this isn't writing
                 //updates the date, even if there were no changes. 
-                String sSQL = mydb.updateDate(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), invoiceId);
+                String sSQL = mydb.updateInvoiceDate(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), invoiceId);
                 db.ExecuteNonQuery(sSQL);
                 System.Console.WriteLine(sSQL);
 
                 //updates the cost of the associated invoiceId
-                sSQL = mydb.updateTotalCost(calculateTotal() + "", invoiceId);
+                sSQL = mydb.updateTotalCharge(calculateTotal() + "", invoiceId);
                 db.ExecuteNonQuery(sSQL);
 
                 System.Console.WriteLine(sSQL);
@@ -225,7 +255,8 @@ namespace FinalProject {
 
                 String sSQL = mydb.addInvoice(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), calculateTotal() + "");
                 db.ExecuteScalarSQL(sSQL);
-                invoiceId = db.ExecuteScalarSQL("select max(InvoiceNum) from invoices") +"";
+                sSQL = mydb.latestInvoice();
+                invoiceId = db.ExecuteScalarSQL(sSQL);
 
                 for (int i = 0; i < dtInvoice.Rows.Count; i++) {
                     sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
@@ -234,10 +265,17 @@ namespace FinalProject {
                 }
 
 
+
+
             }//end else
 
         }//end add/update click
 
+
+        /// <summary>
+        /// calculates the total by getting the cost row in the invoice data table, and adding them together.
+        /// </summary>
+        /// <returns></returns>
         public double calculateTotal() {
             Double total = 0.00;
             if (dtInvoice != null) {
@@ -245,12 +283,14 @@ namespace FinalProject {
                     foreach (DataRow row in dtInvoice.Rows) {
                         total += Double.Parse(row[1].ToString());
                     }
-                } catch (Exception e) { }
+                } catch (Exception) {
+                    MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+                }
             }
 
             lblTotal.Content = "$" + total;
             return total;
-        }
+        }//end calculate total()
 
 
 
