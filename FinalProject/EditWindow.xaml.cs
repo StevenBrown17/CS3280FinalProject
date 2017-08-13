@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -84,6 +85,7 @@ namespace FinalProject
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {
             selectedFunction = "Add";
+            DescriptionCostCanvas.Visibility = Visibility.Visible;
             clear();
 
             // Make description and cost textboxes editable
@@ -105,6 +107,8 @@ namespace FinalProject
             selectedFunction = "Edit";
             // When an item is updated, only update description and cost. This will be done through SQL.
 
+            DescriptionCostCanvas.Visibility = Visibility.Visible;
+
             txtItemDesc.IsReadOnly = false;
             txtItemCost.IsReadOnly = false;
             btnAddItem.IsEnabled = false;
@@ -123,11 +127,44 @@ namespace FinalProject
             // Prevent user from deleting an item that is in the current invoice.
             // Display a warning message to the user.
             // Delete item from database using SQL.
-            
-            btnAddItem.IsEnabled = false;
+
+            /*btnAddItem.IsEnabled = false;
             btnEditItem.IsEnabled = false;
             btnDeleteItem.IsEnabled = false;
-            btnSave.IsEnabled = true;
+            btnSave.IsEnabled = true;*/
+
+            try
+            {
+                ///check to see what the message box is showing
+                if (MessageBox.Show("Are you sure you want to delete item: " + txtItemDesc.Text + "?", "Delete item?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                {
+                    //do no stuff
+                }
+                else
+                {
+                    ///if that fails do this
+                    /*String sSQL = mydb.DeleteLineItems(invoiceId);
+                    db.ExecuteNonQuery(sSQL);
+
+                    sSQL = mydb.DeleteInvoice(invoiceId);
+                    db.ExecuteNonQuery(sSQL);
+
+                    //easiest way to reset all values is to open a new window.
+                    MainWindow mw = new MainWindow();
+                    mw.Show();
+                    this.Close();*/
+                    sSQL = mydb.DeleteInventoryItem(itemCode);
+                    db.ExecuteNonQuery(sSQL);
+
+                    EditWindow ew = new EditWindow();
+                    ew.Show();
+                    this.Close();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
+            }
         }
 
         /// <summary>
@@ -150,6 +187,8 @@ namespace FinalProject
 
                 // Populate item cost textbox.
                 txtItemCost.Text = row[2].ToString();
+
+                btnDeleteItem.IsEnabled = true;
             }
         }
 
@@ -162,12 +201,13 @@ namespace FinalProject
         {
             clear();
 
+            DescriptionCostCanvas.Visibility = Visibility.Hidden;
             txtItemDesc.IsReadOnly = true;
             txtItemCost.IsReadOnly = true;
             dataGrid.IsEnabled = true;
             btnAddItem.IsEnabled = true;
             btnEditItem.IsEnabled = true;
-            btnDeleteItem.IsEnabled = true;
+            btnDeleteItem.IsEnabled = false;
         }
 
         /// <summary>
@@ -219,6 +259,7 @@ namespace FinalProject
             btnAddItem.IsEnabled = true;
             btnEditItem.IsEnabled = true;
             btnDeleteItem.IsEnabled = true;
+            DescriptionCostCanvas.Visibility = Visibility.Hidden;
 
             inventoryDictionary = new Dictionary<string, string>();
             populateDatagridInv();
@@ -242,7 +283,7 @@ namespace FinalProject
         /// <param name="e"></param>
         private void textChanged(object sender, TextChangedEventArgs e)
         {
-            if(btnAddItem.IsEnabled == false || btnDeleteItem.IsEnabled == false || btnEditItem.IsEnabled == false)
+            if(btnAddItem.IsEnabled == false || btnEditItem.IsEnabled == false)
             {
                 if (txtItemDesc.Text != "" && txtItemCost.Text != "")
                 {

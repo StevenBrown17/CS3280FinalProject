@@ -23,7 +23,7 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="btnDeleteItem" Content="Delete Item" HorizontalAlignment="Left" Margin="479,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnDeleteItem_Click">
+        <Button x:Name="btnDeleteItem" Content="Delete Item" HorizontalAlignment="Left" Margin="479,467,0,0" VerticalAlignment="Top" Width="150" Background="#FF0A047E" Foreground="#FFF9F5F5" FontWeight="Bold" FontSize="18" Height="56" Click="btnDeleteItem_Click" IsEnabled="False">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
@@ -39,28 +39,30 @@
                 <DropShadowEffect/>
             </Label.Effect>
         </Label>
-        <TextBox x:Name="txtItemDesc" HorizontalAlignment="Left" Height="23" Margin="697,137,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="223" IsReadOnly="True" TextChanged="textChanged"/>
-        <TextBox x:Name="txtItemCost" HorizontalAlignment="Left" Height="23" Margin="756,180,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164" IsReadOnly="True" PreviewTextInput="previewTextInput" TextChanged="textChanged"/>
-        <Label x:Name="lblItemDesc" Content="Description" HorizontalAlignment="Left" Margin="692,92,0,0" VerticalAlignment="Top" Foreground="White" FontSize="24" FontFamily="Book Antiqua" FontWeight="Bold">
-            <Label.Effect>
-                <DropShadowEffect/>
-            </Label.Effect>
-        </Label>
-        <Label x:Name="lblItemCost" Content="Cost:" HorizontalAlignment="Left" Margin="692,170,0,0" VerticalAlignment="Top" Foreground="White" FontSize="24" FontFamily="Book Antiqua" FontWeight="Bold">
-            <Label.Effect>
-                <DropShadowEffect/>
-            </Label.Effect>
-        </Label>
-        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="686,254,0,0" VerticalAlignment="Top" Width="120" Background="#FF0A047E" Foreground="#FFF9F5F5" Height="32" FontSize="16" FontWeight="Bold" IsEnabled="False" Click="btnSave_Click">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="811,254,0,0" VerticalAlignment="Top" Width="120" Background="#FF0A047E" Foreground="#FFF9F5F5" Height="32" FontSize="16" FontWeight="Bold" Click="btnClear_Click">
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
+        <Canvas x:Name="DescriptionCostCanvas" HorizontalAlignment="Left" Height="169" Margin="662,92,0,0" VerticalAlignment="Top" Width="298" Visibility="Hidden">
+            <Label x:Name="lblItemDesc" Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="24" FontFamily="Book Antiqua" FontWeight="Bold">
+                <Label.Effect>
+                    <DropShadowEffect/>
+                </Label.Effect>
+            </Label>
+            <TextBox x:Name="txtItemDesc" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="223" IsReadOnly="True" TextChanged="textChanged" Canvas.Top="40" Canvas.Left="11"/>
+            <Label x:Name="lblItemCost" Content="Cost:" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" FontSize="24" FontFamily="Book Antiqua" FontWeight="Bold" Canvas.Top="68">
+                <Label.Effect>
+                    <DropShadowEffect/>
+                </Label.Effect>
+            </Label>
+            <TextBox x:Name="txtItemCost" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164" IsReadOnly="True" PreviewTextInput="previewTextInput" TextChanged="textChanged" Canvas.Left="70" Canvas.Top="78"/>
+            <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Background="#FF0A047E" Foreground="#FFF9F5F5" Height="32" FontSize="16" FontWeight="Bold" IsEnabled="False" Click="btnSave_Click" Canvas.Left="10" Canvas.Top="113">
+                <Button.Effect>
+                    <DropShadowEffect/>
+                </Button.Effect>
+            </Button>
+            <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Background="#FF0A047E" Foreground="#FFF9F5F5" Height="32" FontSize="16" FontWeight="Bold" Click="btnClear_Click" Canvas.Left="135" Canvas.Top="113">
+                <Button.Effect>
+                    <DropShadowEffect/>
+                </Button.Effect>
+            </Button>
+        </Canvas>
 
     </Grid>
 </Window>
