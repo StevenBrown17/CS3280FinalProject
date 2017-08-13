@@ -8,6 +8,17 @@ namespace FinalProject
 {
     class clsSQL
     {
+
+        /// <summary>
+        /// This SQL gets all invoices
+        /// </summary> 
+        /// <returns>All data for the given invoice.</returns>
+        public string populateAllInvoices()
+        {
+            string sSQL = "SELECT * FROM Invoices";
+            return sSQL;
+        }
+
         /// <summary>
         /// This SQL gets all the data on an invoice for a given Invoice ID
         /// </summary> 
@@ -29,11 +40,6 @@ namespace FinalProject
             string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate= " + sInvoiceDate;
             return sSQL;
         }
-
-
-        
-
-        //TODO: What if there are 2 invoices with the same charge?
 
         /// <summary>
         /// This SQL gets all the data on an invoice for a given total charge
@@ -85,11 +91,6 @@ namespace FinalProject
             return SQL;
         }
 
-        /*public string AddInventoryItem()
-        {
-            string sSQL = "test";
-            return sSQL;
-        }*/
 
         /// <summary>
         /// Deletes an entry from the ItemDesc table.
