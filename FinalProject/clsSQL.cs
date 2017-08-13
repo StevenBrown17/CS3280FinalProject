@@ -8,6 +8,17 @@ namespace FinalProject
 {
     class clsSQL
     {
+
+        /// <summary>
+        /// This SQL gets all invoices
+        /// </summary> 
+        /// <returns>All data for the given invoice.</returns>
+        public string populateAllInvoices()
+        {
+            string sSQL = "SELECT * FROM Invoices";
+            return sSQL;
+        }
+
         /// <summary>
         /// This SQL gets all the data on an invoice for a given Invoice ID
         /// </summary> 
@@ -29,11 +40,6 @@ namespace FinalProject
             string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate= " + sInvoiceDate;
             return sSQL;
         }
-
-
-        
-
-        //TODO: What if there are 2 invoices with the same charge?
 
         /// <summary>
         /// This SQL gets all the data on an invoice for a given total charge
@@ -71,6 +77,12 @@ namespace FinalProject
             return sSQL;
         }
 
+
+        /// <summary>
+        /// gets the date of the selected invoice number so we can populate the datepicker.
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
         public String SelectInvoiceDateFromNum(String invoiceNum) {
             String SQL = "SELECT Invoices.[InvoiceDate] "+
                          "FROM Invoices " +
@@ -125,27 +137,44 @@ namespace FinalProject
             return sSQL;
         }
 
+        /// <summary>
+        /// deletes all items from LineItems with associated invoice number
+        /// </summary>
+        /// <param name="sInvoiceNum"></param>
+        /// <returns></returns>
         public string DeleteLineItems(string sInvoiceNum) {
             string sSQL = "DELETE * FROM LineItems WHERE `invoiceNum` = " + sInvoiceNum;
             return sSQL;
         }
 
 
-
+        /// <summary>
+        /// inserts record into Invoice table
+        /// </summary>
+        /// <param name="invoiceDate"></param>
+        /// <param name="totalCharge"></param>
+        /// <returns></returns>
         public String addInvoice(String invoiceDate, String totalCharge) { //DATE TO BE IN FORMAT MM/DD/YYY
             String SQL = "INSERT INTO Invoices ( InvoiceDate, TotalCharge) VALUES ( #" + invoiceDate + "#, " + totalCharge + " );";
 
             return SQL;
         }
 
+        /// <summary>
+        /// inserts record into LineItems
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <param name="lineItemNum"></param>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
         public string addLineItem(String invoiceNum, String lineItemNum, String itemCode) {
-            String SQL = "INSERT INTO LineItems ( InvoiceNum, LineItemNum, ItemCode) VALUES (" + invoiceNum +", " + lineItemNum + ", '" + itemCode + "' );";
+            String SQL = "INSERT INTO LineItems ( InvoiceNum, LineItemNum, ItemCode) VALUES (" + invoiceNum +", " + lineItemNum + ", " + itemCode + " );";
 
             return SQL;
         }
 
 
-        public String updateDate(String date, String invoiceNum) { //DATE TO BE IN FORMAT MM/DD/YYY
+        public String updateInvoiceDate(String date, String invoiceNum) { //DATE TO BE IN FORMAT MM/DD/YYY
             String SQL = "UPDATE Invoices " +
                          "SET `InvoiceDate` = #" + date + "# " +
                          "WHERE `InvoiceNum` = " + invoiceNum + ";";
@@ -153,13 +182,26 @@ namespace FinalProject
             return SQL;
         }
 
-        public String updateTotalCost(String cost, String invoiceNum) {
+        public String updateTotalCharge(String cost, String invoiceNum) {
             String SQL = "UPDATE Invoices " +
                          "SET `TotalCharge` = " + cost +
                          " WHERE `InvoiceNum` = " + invoiceNum + ";";
 
             return SQL;
         }
+
+
+        /// <summary>
+        /// Gets latest invoice entered.
+        /// </summary>
+        /// <returns></returns>
+        public String latestInvoice() {
+            String SQL = "select max(InvoiceNum) from invoices";
+            return SQL;
+        }
+
+
+
 
         // <summary>
         /// SQL query to get all the invoice #'s by date ***ADDED BY Martha
@@ -170,6 +212,19 @@ namespace FinalProject
             string sSQL = "SELECT Invoices.InvoiceNum, Invoices.InvoiceDate "
                            + "FROM ItemDesc INNER JOIN (Invoices INNER JOIN LineItems ON Invoices.InvoiceNum = LineItems.InvoiceNum) ON ItemDesc.ItemCode = LineItems.ItemCode "
                            + "WHERE(((Invoices.InvoiceDate) =#" + sDate + "#))";
+            return sSQL;
+        }
+
+        /// <summary>
+        /// Method to Generate the SQL statement to select the
+        /// date of an invoice
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public string SelectInvoiceDate2(string sDate) {
+            string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + sDate + "#";
+
             return sSQL;
         }
 

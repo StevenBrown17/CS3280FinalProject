@@ -21,14 +21,26 @@ namespace FinalProject
     /// </summary>
     public partial class EditWindow : Window
     {
+        /// <summary>
+        /// create a variable for the database
+        /// </summary>
         clsDataAccess db = new clsDataAccess();
+        /// <summary>
+        /// create a variable for the sql class
+        /// </summary>
         clsSQL mydb = new clsSQL();
+        /// <summary>
+        /// create a variable for a data table
+        /// </summary>
         DataTable dt;
         Dictionary<string, string> inventoryDictionary;
         string sSQL;
         string selectedFunction;
         string itemCode;
 
+        /// <summary>
+        /// edit window
+        /// </summary>
         public EditWindow()
         {
             InitializeComponent();
@@ -36,6 +48,11 @@ namespace FinalProject
             populateDatagridInv();
         }
 
+        /// <summary>
+        /// btn return to main click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReturnToMain_Click(object sender, RoutedEventArgs e)
         {
             // Creates a MainWindow object

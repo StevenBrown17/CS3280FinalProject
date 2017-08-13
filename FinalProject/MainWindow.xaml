@@ -30,7 +30,7 @@
                 <DropShadowEffect ShadowDepth="3"/>
             </Label.Effect>
         </Label>
-        <Button x:Name="btnAddUpdate" Content="Add/Update" HorizontalAlignment="Left" Margin="510,502,0,0" VerticalAlignment="Top" Width="106" Height="32" FontSize="14" Foreground="White" Background="#FF0A047E" FontWeight="Bold" Click="btnAddUpdate_Click">
+        <Button x:Name="btnAddUpdate" Content="Add/Update" HorizontalAlignment="Left" Margin="515,502,0,0" VerticalAlignment="Top" Width="106" Height="32" FontSize="14" Foreground="White" Background="#FF0A047E" FontWeight="Bold" Click="btnAddUpdate_Click">
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
@@ -53,7 +53,7 @@
         </Label>
         <DatePicker x:Name="invoiceDatePicker" HorizontalAlignment="Left" Margin="500,102,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.783,0.641" Width="108"/>
         <Label Content="Invoice Date" HorizontalAlignment="Left" Margin="500,76,0,0" VerticalAlignment="Top" Width="80" Foreground="White"/>
-        <DataGrid x:Name="dgInvoiceItems" HorizontalAlignment="Left" Height="269" Margin="320,147,0,0" VerticalAlignment="Top" Width="289"/>
+        <DataGrid x:Name="dgInvoiceItems" HorizontalAlignment="Left" Height="269" Margin="320,147,0,0" VerticalAlignment="Top" Width="289" IsReadOnly="True"/>
         <Label Content="Items on invoice:" HorizontalAlignment="Left" Margin="320,121,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.374,0.486" FontSize="16" Width="142" Foreground="White" FontWeight="Bold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="3"/>
@@ -70,6 +70,11 @@
                 <AccessText TextWrapping="Wrap" Text="or double click item to add. remove this note before turning in" Foreground="White"/>
             </Label.Content>
         </Label>
+        <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" HorizontalAlignment="Left" Margin="389,502,0,0" VerticalAlignment="Top" Width="106" Height="32" FontSize="14" Foreground="White" Background="#FF0A047E" FontWeight="Bold" Click="btnDeleteInvoice_Click" IsEnabled="False">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
 
     </Grid>
 </Window>
