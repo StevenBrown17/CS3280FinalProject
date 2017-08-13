@@ -33,6 +33,11 @@ namespace FinalProject {
         public String sInvoiceNum;
 
         /// <summary>
+        /// User drop down menu selected variables
+        /// </summary>
+        public String sDate;
+
+        /// <summary>
         /// Create an object of type clsDataAccess to access the database
         /// </summary>
         clsDataAccess db = new clsDataAccess();
@@ -86,6 +91,7 @@ namespace FinalProject {
                     ///Add Invoice Dates to the dropdown box
 
                     invoiceDateComboBox.Items.Add(ds.Tables[0].Rows[i][0]).ToString();
+                    
                 }
             }
             catch (Exception)
@@ -138,7 +144,7 @@ namespace FinalProject {
 
             ///It will also reset the drop down menus (combo boxes) back to it's null default. 
 
-            ///Create a new varible for the Main Window
+            ///Create a new variable for the Main Window
             SearchWindow Search = new SearchWindow();
             ///Call it to show
             Search.Show();
@@ -155,8 +161,6 @@ namespace FinalProject {
             {
                 invoiceDateComboBox.IsEnabled = false;
                 invoiceAmountComboBox.IsEnabled = false;
-
-
             }
 
             ///The two other drop down menu's will be disbled when this is being used
@@ -179,6 +183,8 @@ namespace FinalProject {
 
         private void invoiceDateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
+            sDate = invoiceDateComboBox.Text;
             ///Disable other drop down menu's if this is selected
             if (invoiceDateComboBox.IsEnabled)
             {
@@ -201,21 +207,22 @@ namespace FinalProject {
             Console.WriteLine("Searching Date Value After: " + newSelItem);
 
             //get query needed find invoice
-            String query = mydb.invoiceWithDate(newSelItem);
+            String query = mydb.SelectInvoiceDate2(newSelItem);
             Console.WriteLine(query);
-            String sQuery = mydb.SelectInvoiceDate(invoiceDateComboBox.SelectedItem.ToString());
+            String sQuery = mydb.SelectInvoiceDate2(invoiceDateComboBox.SelectedItem.ToString());
 
             //datatable used to fget table data. 
             dt = db.FillSqlDataTable(sQuery);
 
             //fill the datagrid
             invoiceGrid1.ItemsSource = dt.DefaultView;
+
         }
 
         private void invoiceAmountComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ///Disable other drop down menu's if this is selected
-            if (invoiceDateComboBox.IsEnabled)
+            if (invoiceAmountComboBox.IsEnabled)
             {
                 invoiceIDComboBox.IsEnabled = false;
                 invoiceDateComboBox.IsEnabled = false;
