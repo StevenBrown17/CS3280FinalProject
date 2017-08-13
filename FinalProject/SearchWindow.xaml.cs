@@ -150,12 +150,14 @@ namespace FinalProject {
 
             ///The selected form will be captured and passed to the main form with the sInvoiceNum variable
             ///which is the variable of the "user" selected invoice
-            
-            DataRowView dataRow = (DataRowView)invoiceGrid1.SelectedItem;
-            sInvoiceNum = dataRow.Row.ItemArray[0].ToString();
 
-            ///Close the main window
-            this.Hide();
+            if (invoiceGrid1.SelectedItem != null) {
+                DataRowView dataRow = (DataRowView)invoiceGrid1.SelectedItem;
+                sInvoiceNum = dataRow.Row.ItemArray[0].ToString();
+                ///Close the main window
+                this.Hide();
+            }
+            
         }
 
         /// <summary>
@@ -199,10 +201,10 @@ namespace FinalProject {
                     invoiceAmountComboBox.IsEnabled = false;
                 }
 
-                ///The two other drop down menu's will be disbled when this is being used
+                ///The two other drop down menu's will be disabled when this is being used
 
                 ///When selected this combo box will show a drop down list with invoice ID's
-                ///The user will be able to highlight/select an ID and it will be recieved
+                ///The user will be able to highlight/select an ID and it will be received
                 ///by the dataGrid1 to show that specific invoice only
                 Console.WriteLine("textbox Value: " + invoiceIDComboBox.SelectedItem);
 
@@ -210,7 +212,7 @@ namespace FinalProject {
                 //get query needed find invoice
                 String sQuery = mydb.SelectInvoiceID(invoiceIDComboBox.SelectedItem.ToString());
 
-                //datatable used to fget table data. 
+                //datatable used to get table data. 
                 dt = db.FillSqlDataTable(sQuery);
 
                 //fill the datagrid
@@ -241,7 +243,7 @@ namespace FinalProject {
                 ///The two other drop down menu's will be disabled when this is being used
 
                 ///When selected, this combo box will show a drop down list with invoice Dates
-                ///The user will be able to highlight/select a date and it will be recieved
+                ///The user will be able to highlight/select a date and it will be received
                 ///by the dataGrid1 to show that specific invoice only
                 ///
 
@@ -249,7 +251,7 @@ namespace FinalProject {
                 Console.WriteLine("Searching Date Value before: " + selectedItem);
 
 
-                //remove timestamp from selectedItem
+                //remove timestamps from selectedItem
                 var newSelItem = selectedItem.Split(' ')[0];
                 Console.WriteLine("Searching Date Value After: " + newSelItem);
 
@@ -258,7 +260,7 @@ namespace FinalProject {
                 Console.WriteLine(query);
                 String sQuery = mydb.SelectInvoiceDate2(invoiceDateComboBox.SelectedItem.ToString());
 
-                //datatable used to fget table data. 
+                //datatable used to get table data. 
                 dt = db.FillSqlDataTable(sQuery);
 
                 //fill the datagrid
@@ -289,8 +291,8 @@ namespace FinalProject {
 
                 ///The two other drop down menu's will be disabled when this is being used
 
-                ///When selcted, this combo box will show a drop down list with invoice Total Charge
-                ///The user will be able to highlight/select an TotalCharge and it will be recieved
+                ///When selected, this combo box will show a drop down list with invoice Total Charge
+                ///The user will be able to highlight/select an TotalCharge and it will be received
                 ///by the dataGrid1 to show that specific invoice only
                 ///
 
@@ -299,7 +301,7 @@ namespace FinalProject {
                 //get query needed find invoice
                 String sQuery = mydb.SelectTotalCharge(invoiceAmountComboBox.SelectedItem.ToString());
 
-                //datatable used to fget table data. 
+                //datatable used to get table data. 
                 dt = db.FillSqlDataTable(sQuery);
 
                 //fill the datagrid
@@ -342,7 +344,7 @@ namespace FinalProject {
                 //get query needed find invoice
                 String sQuery = mydb.populateAllInvoices();
 
-                //datatable used to fget table data. 
+                //datatable used to get table data. 
                 dt = db.FillSqlDataTable(sQuery);
 
                 //fill the datagrid
