@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Reflection; 
+using System.Reflection;
 
 namespace FinalProject {
     /// <summary>
@@ -45,7 +45,7 @@ namespace FinalProject {
         /// data table for inventory
         /// </summary>
         DataTable dtInventory, dtInvoice = new System.Data.DataTable();
-        
+
         /// <summary>
         /// searchWindow object ***ADDED by Martha
         /// </summary>
@@ -57,7 +57,7 @@ namespace FinalProject {
         String sInvoiceNum;
 
         /// <summary>
-        /// main window intialization
+        /// main window initialization
         /// </summary>
         public MainWindow() {
 
@@ -67,7 +67,7 @@ namespace FinalProject {
             ///invoice picker method
             invoiceDatePicker.SelectedDate = DateTime.Now.Date;
 
-            ///inventory dictiony
+            ///inventory dictionary
             inventoryDictionary = new Dictionary<String, String>();
 
             //this.invoiceId = clsUtil.invoiceId;
@@ -78,8 +78,8 @@ namespace FinalProject {
 
             ///this is needed to set up the table  so we can add inventory items
             populateInvoice(invoiceId);
-            
-            ///calulate total variable
+
+            ///calculate total variable
             calculateTotal();
         }
 
@@ -90,8 +90,7 @@ namespace FinalProject {
         /// <param name="e"></param>
         private void Search_Window_Click(object sender, RoutedEventArgs e) {
             ///try catch block to catch errors
-            try
-            {
+            try {
                 ///instantiate search window
                 searchWin = new SearchWindow();
 
@@ -115,8 +114,7 @@ namespace FinalProject {
 
                 ///close search window
                 searchWin.Close();
-            }
-            catch (Exception)///catch exceptions
+            } catch (Exception)///catch exceptions
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
@@ -146,8 +144,7 @@ namespace FinalProject {
         /// </summary>
         public void populateInventory() {
             ///try catch block to handle exceptions
-            try
-            {
+            try {
                 //get data from database and load into dgInventoryItems
                 //Method should be ran in initialize method
 
@@ -158,12 +155,10 @@ namespace FinalProject {
                 ///inventory items set to default view 
                 dgInventoryItems.ItemsSource = dtInventory.DefaultView;
                 ///foreach loop to populate the grid
-                foreach (DataRow row in dtInventory.Rows)
-                {
+                foreach (DataRow row in dtInventory.Rows) {
                     inventoryDictionary.Add(row[1].ToString(), row[0].ToString());
                 }
-            }
-            catch (Exception)///catch exceptions
+            } catch (Exception)///catch exceptions
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
@@ -178,11 +173,9 @@ namespace FinalProject {
         /// <param name="invoiceId"></param>
         public void populateInvoice(String invoiceId) {
             ///try catch block to handle exceptions
-            try
-            {
+            try {
                 ///if statement to check invoice ID and populate invoice
-                if (invoiceId != "")
-                {
+                if (invoiceId != "") {
                     ///set delete invoice to enabled
                     btnDeleteInvoice.IsEnabled = true;
                     ///set label with number
@@ -209,9 +202,7 @@ namespace FinalProject {
 
                     //pull data from database
                     //UPDATE INVOICE LABEL WITH INVOICEID - lblInvoiceId
-                }
-                else
-                {
+                } else {
                     ///if all that fails than do this
                     btnDeleteInvoice.IsEnabled = false;
                     //fields should be clear and ready for input.
@@ -220,9 +211,8 @@ namespace FinalProject {
                     ///populate invoice items
                     dgInvoiceItems.ItemsSource = dtInvoice.DefaultView;
                 }
-            }
-            catch (Exception)///catch exceptions
-            {
+            } catch (Exception){///catch exceptions
+            
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
 
@@ -236,12 +226,11 @@ namespace FinalProject {
         /// <param name="e"></param>
         private void btnAddInventory_Click(object sender, RoutedEventArgs e) {
             ///try catch block
-            try
-            {
+            try {
                 ///create datarow for inventory items
                 DataRowView dataRow = (DataRowView)dgInventoryItems.SelectedItem;
                 //int index = dgInventoryItems.CurrentCell.Column.DisplayIndex;
-                ///this below capture certian cells of info
+                ///this below capture certain cells of info
                 string item = dataRow.Row.ItemArray[1].ToString();
                 string cost = dataRow.Row.ItemArray[2].ToString();
                 DataRow dr = dtInvoice.NewRow();
@@ -250,12 +239,11 @@ namespace FinalProject {
                 dtInvoice.Rows.Add(dr);
                 calculateTotal();
                 //dgInvoiceItems.Items.Add(new Item {item = dataRow.Row.ItemArray[0].ToString(), price = dataRow.Row.ItemArray[1].ToString() });
-            }
-            catch (Exception)///catch exception
-            {
+            } catch (Exception){///catch exception
+            
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
-        }
+        }//end btnAddInventory
 
         /// <summary>
         /// removes selected index of the invoice datatable.
@@ -263,13 +251,13 @@ namespace FinalProject {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnRemoveItem_Click(object sender, RoutedEventArgs e) {
-            ///creates varibale index to remove items
+            ///creates variable index to remove items
             int index = dgInvoiceItems.SelectedIndex;
             ///calls remove function
             dtInvoice.Rows.RemoveAt(index);
             ///calls calculate total method
             calculateTotal();
-        }
+        }//end remove item
 
         /// <summary>
         /// if given invoice id Updates the date and total charge. delete everything in the LineItem table, and write the data again with the data in the datatable
@@ -277,16 +265,13 @@ namespace FinalProject {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e) {
-            try
-            {
-                ///if statment to check and compare dates
+            try {
+                ///if statement to check and compare dates
                 if (invoiceDatePicker.SelectedDate == null) { invoiceDatePicker.SelectedDate = DateTime.Now.Date; }// if no date is picked, default to today
                 int count = 0;//keeps track of records inserted
                 ///if invoice id is null
-                if (invoiceId != "")
-                {
+                if (invoiceId != "") {
 
-                    //TODO Figure out why this isn't writing
                     //updates the date, even if there were no changes. 
                     String sSQL = mydb.updateInvoiceDate(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), invoiceId);
                     db.ExecuteNonQuery(sSQL);
@@ -304,8 +289,7 @@ namespace FinalProject {
 
 
                     //grabs the data from the DataTable, runs a sql statement adding each line individually.
-                    for (int i = 0; i < dtInvoice.Rows.Count; i++)
-                    {
+                    for (int i = 0; i < dtInvoice.Rows.Count; i++) {
                         sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
                         System.Console.WriteLine(sSQL);
                         db.ExecuteNonQuery(sSQL);
@@ -314,23 +298,14 @@ namespace FinalProject {
 
                     MessageBox.Show("Invoice: " + invoiceId + " added successfully!\n" + count + " items added");
 
-
-                }
-                else
-                {
-                    //TODO Figure out why this isn't writing
-                    /*
-                     * DO I USE ExecuteScalarSQL   or    ExecuteNonQuery
-                     * Code here for adding to database when no InvoiceId was given.
-                     */
+                } else {
 
                     String sSQL = mydb.addInvoice(invoiceDatePicker.SelectedDate.Value.ToShortDateString(), calculateTotal() + "");
                     db.ExecuteNonQuery(sSQL);
                     sSQL = mydb.latestInvoice();
                     invoiceId = db.ExecuteScalarSQL(sSQL);
 
-                    for (int i = 0; i < dtInvoice.Rows.Count; i++)
-                    {
+                    for (int i = 0; i < dtInvoice.Rows.Count; i++) {
                         sSQL = mydb.addLineItem(invoiceId, i + 1 + "", inventoryDictionary[dtInvoice.Rows[i][0] + ""]);
                         System.Console.WriteLine(sSQL);
                         db.ExecuteNonQuery(sSQL);
@@ -341,9 +316,7 @@ namespace FinalProject {
 
 
                 }//end else
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
 
@@ -356,15 +329,11 @@ namespace FinalProject {
         /// <param name="e"></param>
         private void btnDeleteInvoice_Click(object sender, RoutedEventArgs e) {
             ///try catch block
-            try
-            {
+            try {
                 ///check to see what the message box is showing
-                if (MessageBox.Show("Are you sure you want to delete Invoice Number: " + invoiceId + "?", "Delete Invoice?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
-                {
+                if (MessageBox.Show("Are you sure you want to delete Invoice Number: " + invoiceId + "?", "Delete Invoice?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No) {
                     //do no stuff
-                }
-                else
-                {
+                } else {
                     ///if that fails do this
                     String sSQL = mydb.DeleteLineItems(invoiceId);
                     db.ExecuteNonQuery(sSQL);
@@ -378,12 +347,10 @@ namespace FinalProject {
                     this.Close();
 
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
             }
-        }
+        }//end delete 
 
 
         /// <summary>
@@ -403,7 +370,7 @@ namespace FinalProject {
                     MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name);
                 }
             }
-            ///update lable
+            ///update label
             lblTotal.Content = "$" + total;
             ///return total
             return total;

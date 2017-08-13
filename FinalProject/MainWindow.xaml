@@ -65,11 +65,7 @@
             </Button.Effect>
         </Button>
         <Button x:Name="btnRemoveItem" Content="Remove Item" HorizontalAlignment="Left" Margin="534,426,0,0" VerticalAlignment="Top" Width="75" Click="btnRemoveItem_Click"/>
-        <Label HorizontalAlignment="Left" Margin="10,446,0,0" VerticalAlignment="Top" Width="164" Height="58">
-            <Label.Content>
-                <AccessText TextWrapping="Wrap" Text="or double click item to add. remove this note before turning in" Foreground="White"/>
-            </Label.Content>
-        </Label>
+        <Label HorizontalAlignment="Left" Margin="10,446,0,0" VerticalAlignment="Top" Width="164" Height="58"/>
         <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" HorizontalAlignment="Left" Margin="389,502,0,0" VerticalAlignment="Top" Width="106" Height="32" FontSize="14" Foreground="White" Background="#FF0A047E" FontWeight="Bold" Click="btnDeleteInvoice_Click" IsEnabled="False">
             <Button.Effect>
                 <DropShadowEffect/>

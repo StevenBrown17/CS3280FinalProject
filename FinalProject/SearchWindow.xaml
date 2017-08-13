@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FinalProject"
         mc:Ignorable="d"
-        Title="Invoice Search Form" Height="600" Width="1000" FontSize="14" FontWeight="Bold">
+        Title="Invoice Search Form" Height="600" Width="1000" FontSize="14" FontWeight="Bold" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <ImageBrush ImageSource="Bck2.jpg"/>
     </Window.Background>
